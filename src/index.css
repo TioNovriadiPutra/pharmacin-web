@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-main-background overflow-hidden;
+}
+
+h1 {
+  @apply font-plus-jakarta text-2xl font-bold;
+}
+
+h2 {
+  @apply font-plus-jakarta text-base font-semibold;
+}
+
+h3 {
+  @apply font-plus-jakarta text-base font-medium;
+}
+
+h4 {
+  @apply font-plus-jakarta text-sm font-medium;
+}
+
+h5 {
+  @apply font-plus-jakarta text-base font-normal;
+}
+
+p {
+  @apply font-plus-jakarta text-sm font-normal;
+}
+
+button {
+  @apply flex flex-col py-3 rounded-md font-plus-jakarta text-sm font-semibold;
+}
+
+img {
+  @apply flex object-contain object-left;
+}
+
+div {
+  @apply flex flex-col;
+}
+
+input {
+  @apply border border-border outline-none px-3.5 py-2.5 rounded-md w-full font-plus-jakarta text-sm font-medium;
+}
+
+form {
+  @apply flex flex-col;
+}
+
+.dropdown-container {
+  @apply border outline-none px-3.5 py-0.75 rounded-md w-full flex-row items-center;
+}
+
+.dropdown-menu {
+  @apply max-h-84 rounded-sm bg-white left-0 right-0 absolute shadow-dropdown-menu z-50 mx-3.5;
+  top: 120%;
+}

@@ -26,7 +26,7 @@ const DrawerItem = ({ item, index, location, onMenuClick }) => {
           <div className="gap-6 pl-11 pt-6" ref={subMenuRef}>
             {item.subMenu.map((item, index) => (
               <button key={index.toString()} className="py-0" onClick={() => onSubMenuItemClick(item.path)}>
-                <h4 className={`text-placeholder ${location.pathname.includes(item.path) ? "text-primary" : "text-placeholder"}`}>{item.label}</h4>
+                <h4 className={`text-placeholder ${location.pathname.includes(item.path) ? "text-primary" : "text-placeholder"} whitespace-nowrap`}>{item.label}</h4>
               </button>
             ))}
           </div>

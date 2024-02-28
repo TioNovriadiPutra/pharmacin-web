@@ -5,6 +5,7 @@ const REGIS_PREFIX = AUTH_PREFIX + "/register";
 const FACTORY_PREFIX = BASE_URL + "drug-factory";
 const DRUG_PREFIX = BASE_URL + "drug";
 const DRUG_CATEGORY_PREFIX = DRUG_PREFIX + "/category";
+const STOCK_PREFIX = BASE_URL + "stock";
 
 export const ENDPOINT = {
   login: AUTH_PREFIX + "/login",
@@ -13,4 +14,5 @@ export const ENDPOINT = {
   addFactory: FACTORY_PREFIX + "/partnership",
   getCategories: DRUG_CATEGORY_PREFIX,
   getDrugs: DRUG_PREFIX,
+  getStocks: STOCK_PREFIX,
 };

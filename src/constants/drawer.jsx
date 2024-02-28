@@ -1,4 +1,4 @@
-import { dashboardActive, dashboardInactive, obatActive, obatInactive, pabrikanActive, pabrikanInactive, stockActive, stockInactive } from "assets/images";
+import { dashboardActive, dashboardInactive, obatActive, obatInactive, pabrikanActive, pabrikanInactive, pembelianActive, pembelianInactive, stockActive, stockInactive } from "assets/images";
 
 const drawerList = [
   {
@@ -48,6 +48,22 @@ const drawerList = [
     path: "/pabrikan",
     active: pabrikanActive,
     inactive: pabrikanInactive,
+  },
+  {
+    label: "Pembelian",
+    path: "/pembelian",
+    active: pembelianActive,
+    inactive: pembelianInactive,
+    subMenu: [
+      {
+        label: "Tambah Pembelian",
+        path: "/pembelian/tambah",
+      },
+      {
+        label: "Kelola Pembelian",
+        path: "/pembelian",
+      },
+    ],
   },
 ];
 

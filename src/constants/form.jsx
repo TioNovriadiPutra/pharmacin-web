@@ -191,13 +191,13 @@ const addObatForm = {
       items: [],
     },
     {
-      type: "text",
+      type: "currency",
       name: "purchasePrice",
       placeholder: "Harga Beli",
       outside: true,
     },
     {
-      type: "text",
+      type: "currency",
       name: "sellingPrice",
       placeholder: "Harga Jual",
       outside: true,
@@ -210,8 +210,8 @@ const addObatForm = {
     categoryId: null,
     shelve: "",
     factoryId: null,
-    purchasePrice: "",
-    sellingPrice: "",
+    purchasePrice: 0,
+    sellingPrice: 0,
   },
   submitButton: {
     type: "submit",

@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
 import { Controller } from "react-hook-form";
 import ErrorMessageInput from "./ErrorMessageInput";
+import CurrencyInput from "react-currency-input-field";
 
-const TextInput = ({ inputData, control, validationError }) => {
+const CurrInput = ({ inputData, control, validationError }) => {
   return (
     <Controller
       name={inputData.name}
@@ -12,11 +13,12 @@ const TextInput = ({ inputData, control, validationError }) => {
           <div className="gap-0.5 relative">
             {inputData.outside && <h3 className="text-sub-title whitespace-nowrap">{inputData.placeholder}</h3>}
 
-            <input
-              className={`${validationError && "border-danger"}`}
-              type={inputData.type === "currency" ? "number" : inputData.type}
+            <CurrencyInput
+              prefix="Rp."
               placeholder={inputData.outside ? "" : inputData.placeholder}
-              {...field}
+              intlConfig={{ locale: "id-ID", currency: "IDR" }}
+              value={field.value}
+              onValueChange={(value) => field.onChange(parseInt(value) || 0)}
             />
 
             <ErrorMessageInput validationError={validationError} />
@@ -27,9 +29,9 @@ const TextInput = ({ inputData, control, validationError }) => {
   );
 };
 
-export default TextInput;
+export default CurrInput;
 
-TextInput.propTypes = {
+CurrInput.propTypes = {
   inputData: PropTypes.object,
   control: PropTypes.any,
   validationError: PropTypes.object,

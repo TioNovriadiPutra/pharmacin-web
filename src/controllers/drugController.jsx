@@ -7,7 +7,7 @@ import { useMutation } from "react-query";
 import { setRecoil } from "recoil-nexus";
 import { addDrug, deleteDrug, getDrugDetail, updateDrug } from "services/drug";
 import { formModalDataState, showFormModalState, validationErrorState } from "store/atom/formState";
-import { editDataState, isLoadingState, showConfirmationModalState } from "store/atom/pageState";
+import { detailDataState, editDataState, isLoadingState, showConfirmationModalState, showDetailModalState } from "store/atom/pageState";
 
 const useDrugController = () => {
   const { useGetDrugs } = useDrugModel();
@@ -30,6 +30,10 @@ const useDrugController = () => {
             id: item.id,
             data,
             withAction: [
+              {
+                type: "info",
+                onClick: (id) => queryGetDrugDetail(id),
+              },
               {
                 type: "edit",
                 onClick: (id) => queryGetDrugUpdateForm(id),
@@ -113,8 +117,76 @@ const useDrugController = () => {
         setRecoil(showFormModalState, true);
         setRecoil(formModalDataState, formData);
         setRecoil(editDataState, {
-          onApprove: (data) => updateDrugMutation.mutate({ id, data }),
+          onApprove: (data) => updateDrugMutation.mutate({ id, data: { ...data, categoryId: data.categoryId.value, factoryId: data.factoryId.value } }),
         });
+      })
+      .catch((error) => {
+        if (error.error.status === 404) {
+          showToast("failed", error.error.message);
+        }
+      })
+      .finally(() => {
+        setRecoil(isLoadingState, false);
+      });
+  };
+
+  const queryGetDrugDetail = async (id) => {
+    setRecoil(isLoadingState, true);
+
+    await getDrugDetail(id)
+      .then((response) => {
+        const detailData = {
+          title: "Informasi Obat",
+          inputs: [
+            {
+              title: "ID",
+              value: response.data.drug_number,
+            },
+            {
+              title: "Nama Obat",
+              value: response.data.drug,
+            },
+            {
+              title: "Nama Generik",
+              value: response.data.drug_generic_name || "-",
+            },
+            {
+              title: "Takaran",
+              value: response.data.dose,
+            },
+            {
+              title: "Kategori",
+              value: response.data.drug_category.category_name,
+            },
+            {
+              title: "Rak",
+              value: response.data.shelve || "-",
+            },
+            {
+              title: "Pabrikan",
+              value: response.data.drug_factory.factory_name,
+            },
+            {
+              title: "Harga Beli Pabrikan",
+              value: formatCurrency(response.data.purchase_price),
+            },
+            {
+              title: "Harga Jual",
+              value: formatCurrency(response.data.selling_price),
+            },
+          ],
+          footer: [
+            {
+              label: "Stock",
+              value: response.data.total_stock,
+              color: "bg-light-primary",
+              textColor: "text-primary",
+            },
+          ],
+        };
+
+        setRecoil(showDetailModalState, true);
+        setRecoil(detailDataState, detailData);
       })
       .catch((error) => {
         if (error.error.status === 404) {

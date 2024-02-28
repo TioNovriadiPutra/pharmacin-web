@@ -1,4 +1,5 @@
 import { queryClient } from "config/query";
+import { addPabrikForm } from "constants/form";
 import { formatCurrency } from "helpers/formatter";
 import { hashIdUrl } from "helpers/hash";
 import { showToast } from "helpers/toast";
@@ -107,6 +108,10 @@ const useDrugFactoryController = () => {
             },
           ],
         },
+      });
+
+      Object.assign(addPabrikForm, {
+        submitButton: { ...addPabrikForm.submitButton, onClick: (data) => addDrugFactoryMutation.mutate(data) },
       });
     }
 

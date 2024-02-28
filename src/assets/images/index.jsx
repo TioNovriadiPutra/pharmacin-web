@@ -20,3 +20,6 @@ export { default as obatInactive } from "./obatInactive.png";
 export { default as drawerArrow } from "./drawerArrow.png";
 export { default as stockActive } from "./stockActive.png";
 export { default as stockInactive } from "./stockInactive.png";
+export { default as infoIcon } from "./info.png";
+export { default as pembelianActive } from "./pembelianActive.png";
+export { default as pembelianInactive } from "./pembelianInactive.png";

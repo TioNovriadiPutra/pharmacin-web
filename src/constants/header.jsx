@@ -1,6 +1,7 @@
 import { setRecoil } from "recoil-nexus";
 import { formModalDataState, showFormModalState } from "store/atom/formState";
 import { addKategoriForm, addObatForm, addPabrikForm } from "./form";
+import { switchIndexState } from "store/atom/pageState";
 
 const pabrikanHeader = {
   titleData: {
@@ -53,4 +54,27 @@ const kelolaObatHeader = {
   ],
 };
 
-export { pabrikanHeader, kategoriHeader, kelolaObatHeader };
+const stockHeader = {
+  titleData: {
+    title: "Stock",
+    subTitle: "/ Stock",
+  },
+  functionData: [
+    {
+      type: "switch",
+      buttons: [
+        {
+          type: "button",
+          label: "Per Obat",
+        },
+        {
+          type: "button",
+          label: "Per Item",
+        },
+      ],
+      onClick: (index) => setRecoil(switchIndexState, index),
+    },
+  ],
+};
+
+export { pabrikanHeader, kategoriHeader, kelolaObatHeader, stockHeader };

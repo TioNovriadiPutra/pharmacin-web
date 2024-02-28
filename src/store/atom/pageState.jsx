@@ -35,4 +35,9 @@ const drawerStatusState = atom({
   default: false,
 });
 
-export { isLoadingState, showConfirmationModalState, editDataState, detailDataState, showDetailModalState, drawerSubIndexState, drawerStatusState };
+const switchIndexState = atom({
+  key: "stockSwitchIndexState",
+  default: 0,
+});
+
+export { isLoadingState, showConfirmationModalState, editDataState, detailDataState, showDetailModalState, drawerSubIndexState, drawerStatusState, switchIndexState };

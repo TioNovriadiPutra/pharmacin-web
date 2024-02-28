@@ -1,4 +1,4 @@
-import { deleteIcon, editIcon } from "assets/images";
+import { deleteIcon, editIcon, infoIcon } from "assets/images";
 import PropTypes from "prop-types";
 
 const TableRow = ({ rowData }) => {
@@ -20,8 +20,15 @@ const TableRow = ({ rowData }) => {
       {rowData.withAction && (
         <div className="flex-1 flex-row justify-center items-center gap-2.5">
           {rowData.withAction.map((item, index) => (
-            <button key={index.toString()} className="py-0" onClick={() => item.onClick(rowData.id)}>
-              <img src={item.type === "delete" ? deleteIcon : item.type === "edit" ? editIcon : null} />
+            <button
+              key={index.toString()}
+              className="py-0"
+              onClick={(e) => {
+                e.stopPropagation();
+                item.onClick(rowData.id);
+              }}
+            >
+              <img src={item.type === "delete" ? deleteIcon : item.type === "edit" ? editIcon : item.type === "info" ? infoIcon : null} />
             </button>
           ))}
         </div>

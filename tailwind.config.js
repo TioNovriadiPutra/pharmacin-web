@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 // eslint-disable-next-line no-undef
 const tailwindScrollbar = require("tailwind-scrollbar");
+const tailwindAspectRatio = require("@tailwindcss/aspect-ratio");
 
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -59,7 +60,9 @@ export default {
         1.25: "5px",
         82: "322px",
         18: "68px",
+        97: "484px",
         98: "542px",
+        100: "794px",
       },
       height: {
         13: "54px",
@@ -78,6 +81,7 @@ export default {
       },
       spacing: {
         8.5: "34px",
+        10.5: "42px",
       },
     },
     borderRadius: {
@@ -89,5 +93,14 @@ export default {
       "dropdown-menu": "1px 1px 12px rgba(0, 0, 0, 0.25)",
     },
   },
-  plugins: [tailwindScrollbar({ nocompatible: true, preferredStrategy: "pseudoelements" })],
+  corePlugins: {
+    aspectRation: false,
+  },
+  plugins: [
+    tailwindScrollbar({
+      nocompatible: true,
+      preferredStrategy: "pseudoelements",
+    }),
+    tailwindAspectRatio,
+  ],
 };

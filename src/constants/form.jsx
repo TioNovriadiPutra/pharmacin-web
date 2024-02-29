@@ -8,17 +8,19 @@ const loginForm = {
       {
         type: "email",
         name: "email",
-        defaultValue: null,
         placeholder: "Email",
       },
       {
         type: "password",
         name: "password",
-        defaultValue: null,
         placeholder: "Password",
       },
     ],
   ],
+  defaultValues: {
+    email: "",
+    password: "",
+  },
   submitButton: {
     label: "Masuk",
     type: "submit",
@@ -33,13 +35,11 @@ const registerForm = {
       {
         type: "text",
         name: "fullName",
-        defaultValue: null,
         placeholder: "Nama Lengkap",
       },
       {
         type: "dropdown",
         name: "gender",
-        defaultValue: null,
         placeholder: "Jenis Kelamin",
         items: [
           {
@@ -55,20 +55,22 @@ const registerForm = {
       {
         type: "text",
         name: "phone",
-        defaultValue: null,
         placeholder: "Nomor Handphone",
       },
       {
         type: "text",
         name: "clinicName",
-        defaultValue: null,
         placeholder: "Nama Klinik",
       },
       {
         type: "text",
         name: "clinicPhone",
-        defaultValue: null,
         placeholder: "Nomor Telepon Klinik",
+      },
+      {
+        type: "text",
+        name: "address",
+        placeholder: "Alamat Klinik",
       },
     ],
     [
@@ -92,6 +94,17 @@ const registerForm = {
       },
     ],
   ],
+  defaultValues: {
+    fullName: "",
+    gender: null,
+    phone: "",
+    clinicName: "",
+    clinicPhone: "",
+    address: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+  },
   submitButton: {
     label: "Daftar",
     type: "submit",
@@ -105,21 +118,18 @@ const addPabrikForm = {
     {
       type: "text",
       name: "factoryName",
-      defaultValue: null,
       placeholder: "Nama Pabrik",
       outside: true,
     },
     {
       type: "email",
       name: "factoryEmail",
-      defaultValue: null,
       placeholder: "Email Pabrik",
       outside: true,
     },
     {
       type: "text",
       name: "factoryPhone",
-      defaultValue: null,
       placeholder: "Telepon Pabrik",
       outside: true,
     },
@@ -290,11 +300,13 @@ const addPembelianForm = {
           type: "currency",
           name: "purchasePrice",
           placeholder: "Rp. 0",
+          readOnly: true,
         },
         {
           type: "currency",
           name: "totalPrice",
           placeholder: "Rp. 0",
+          readOnly: true,
         },
       ],
     },
@@ -318,4 +330,11 @@ const addPembelianForm = {
   },
 };
 
-export { loginForm, registerForm, addPabrikForm, addKategoriForm, addObatForm, addPembelianForm };
+export {
+  loginForm,
+  registerForm,
+  addPabrikForm,
+  addKategoriForm,
+  addObatForm,
+  addPembelianForm,
+};

@@ -19,7 +19,10 @@ const useAuthController = () => {
       setRecoil(tokenState, response.token.token);
       setRecoil(paymentStatusState, response.paymentStatus);
       localStorage.setItem("@token", response.token.token);
-      localStorage.setItem("@paymentStatus", JSON.stringify(response.paymentStatus));
+      localStorage.setItem(
+        "@paymentStatus",
+        JSON.stringify(response.paymentStatus)
+      );
       showToast("success", response.message);
     },
     onError: (error) => {
@@ -78,7 +81,11 @@ const useAuthController = () => {
 
   return {
     useLogin: (data) => loginMutation.mutate(data),
-    useRegisterAdmin: (data) => registerAdminMutation.mutate({ ...data, gender: data.gender.value }),
+    useRegisterAdmin: (data) =>
+      registerAdminMutation.mutate({
+        ...data,
+        gender: data.gender ? data.gender.value : null,
+      }),
     useLogout,
     useIsLoggedIn,
   };

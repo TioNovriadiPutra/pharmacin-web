@@ -2,7 +2,11 @@ import { useSpringValue } from "@react-spring/web";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { formModalDataState, showFormModalState, validationErrorState } from "store/atom/formState";
+import {
+  formModalDataState,
+  showFormModalState,
+  validationErrorState,
+} from "store/atom/formState";
 import { editDataState } from "store/atom/pageState";
 
 const useFormModal = () => {
@@ -19,6 +23,7 @@ const useFormModal = () => {
 
   const handleOpen = () => {
     formAnim.start(542);
+    reset(formModalData.defaultValues);
   };
 
   const onClose = () => {
@@ -50,7 +55,13 @@ const useFormModal = () => {
     formAnim,
     onClose,
     control,
-    onSubmit: handleSubmit(formModalData ? (editData ? editData.onApprove : formModalData.submitButton.onClick) : null),
+    onSubmit: handleSubmit(
+      formModalData
+        ? editData
+          ? editData.onApprove
+          : formModalData.submitButton.onClick
+        : null
+    ),
   };
 };
 

@@ -57,11 +57,11 @@ const drawerList = [
     subMenu: [
       {
         label: "Tambah Pembelian",
-        path: "/pembelian/tambah",
+        path: "/pembelian",
       },
       {
         label: "Kelola Pembelian",
-        path: "/pembelian",
+        path: "/pembelian/kelola",
       },
     ],
   },

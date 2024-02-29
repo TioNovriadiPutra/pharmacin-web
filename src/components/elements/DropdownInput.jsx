@@ -16,7 +16,7 @@ const DropdownInput = ({ inputData, control, validationError }) => {
           {inputData.outside && <h3 className="text-sub-title whitespace-nowrap">{inputData.placeholder}</h3>}
 
           <div className="relative">
-            <div className={`dropdown-container ${validationError ? "border-danger" : "border-border"}`} onClick={() => setIsOpen((prev) => !prev)}>
+            <div className={`dropdown-container flex-1 ${validationError ? "border-danger" : "border-border"}`} onClick={() => setIsOpen((prev) => !prev)}>
               <h4 className={`flex-1 ${field.value ? "text-black" : "text-placeholder"}`}>{field.value ? field.value.label : inputData.outside ? "" : inputData.placeholder}</h4>
 
               <img src={dropdownArrow} />

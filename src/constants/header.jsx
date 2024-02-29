@@ -77,4 +77,16 @@ const stockHeader = {
   ],
 };
 
-export { pabrikanHeader, kategoriHeader, kelolaObatHeader, stockHeader };
+const tambahPembelianHeader = {
+  titleData: {
+    title: "Pembelian",
+  },
+  functionData: [
+    {
+      type: "button",
+      label: "Konfirmasi",
+    },
+  ],
+};
+
+export { pabrikanHeader, kategoriHeader, kelolaObatHeader, stockHeader, tambahPembelianHeader };

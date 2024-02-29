@@ -6,6 +6,8 @@ const FACTORY_PREFIX = BASE_URL + "drug-factory";
 const DRUG_PREFIX = BASE_URL + "drug";
 const DRUG_CATEGORY_PREFIX = DRUG_PREFIX + "/category";
 const STOCK_PREFIX = BASE_URL + "stock";
+const TRANSACTION_PREFIX = BASE_URL + "transaction";
+const PURCHASE_PREFIX = TRANSACTION_PREFIX + "/purchase";
 
 export const ENDPOINT = {
   login: AUTH_PREFIX + "/login",
@@ -15,4 +17,5 @@ export const ENDPOINT = {
   getCategories: DRUG_CATEGORY_PREFIX,
   getDrugs: DRUG_PREFIX,
   getStocks: STOCK_PREFIX,
+  addPurchaseTransaction: PURCHASE_PREFIX,
 };

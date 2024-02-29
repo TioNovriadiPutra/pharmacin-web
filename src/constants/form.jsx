@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const loginForm = {
   title: "Masuk",
   subTitle: "Selamat datang, silahkan masuk dengan akun yang telah terdaftar",
@@ -122,6 +124,11 @@ const addPabrikForm = {
       outside: true,
     },
   ],
+  defaultValues: {
+    factoryName: "",
+    factoryEmail: "",
+    factoryPhone: "",
+  },
   submitButton: {
     type: "submit",
     label: "Tambah Pabrik",
@@ -219,4 +226,96 @@ const addObatForm = {
   },
 };
 
-export { loginForm, registerForm, addPabrikForm, addKategoriForm, addObatForm };
+const addPembelianForm = {
+  pembelian1: {
+    type: "pembelian-cashier",
+    inputs: [
+      {
+        type: "dropdown",
+        name: "factoryId",
+        placeholder: "Nama Pabrik",
+        outside: true,
+        items: [],
+      },
+      {
+        type: "date",
+        name: "createdAt",
+        placeholder: "Tanggal",
+        outside: true,
+        readOnly: true,
+      },
+    ],
+  },
+  pembelian2: {
+    type: "pembelian-cashier",
+    inputs: [
+      {
+        type: "currency",
+        name: "totalPrice",
+        placeholder: "Total",
+        outside: true,
+        readOnly: true,
+      },
+    ],
+  },
+  pembelian3: {
+    type: "pembelian-cashier",
+    header: ["Nama Obat", "Kadaluarsa", "QTY", "Harga", "Total", "Tindakan"],
+    inputs: [
+      {
+        type: "cart",
+        name: "purchaseItems",
+        readOnly: true,
+      },
+    ],
+    temp: {
+      inputs: [
+        {
+          type: "dropdown",
+          name: "drugId",
+          placeholder: "Pilih Obat",
+          items: [],
+        },
+        {
+          type: "date",
+          name: "expired",
+          placeholder: "YYYY-MM-DD",
+        },
+        {
+          type: "number",
+          name: "quantity",
+          placeholder: "0",
+        },
+        {
+          type: "currency",
+          name: "purchasePrice",
+          placeholder: "Rp. 0",
+        },
+        {
+          type: "currency",
+          name: "totalPrice",
+          placeholder: "Rp. 0",
+        },
+      ],
+    },
+    defaultTemp: {
+      drugId: null,
+      expired: "",
+      quantity: "",
+      purchasePrice: 0,
+      totalPrice: 0,
+    },
+    addButton: {
+      type: "button",
+      label: "Add Item",
+    },
+  },
+  defaultValues: {
+    factoryId: null,
+    createdAt: moment().format("YYYY-MM-DD"),
+    totalPrice: 0,
+    purchaseItems: [],
+  },
+};
+
+export { loginForm, registerForm, addPabrikForm, addKategoriForm, addObatForm, addPembelianForm };

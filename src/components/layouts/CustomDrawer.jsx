@@ -12,7 +12,7 @@ const CustomDrawer = () => {
     <div className="w-18 h-screen relative">
       {drawerStatus && <DrawerBackdrop onClick={onClose} />}
 
-      <animated.div style={{ width: drawerAnim, borderTopRightRadius: drawerBorderAnim, borderBottomRightRadius: drawerBorderAnim }} className="h-full overflow-hidden bg-white z-10 w-18 pt-6">
+      <animated.div style={{ width: drawerAnim, borderTopRightRadius: drawerBorderAnim, borderBottomRightRadius: drawerBorderAnim }} className="h-full overflow-hidden bg-white z-50 w-18 pt-6">
         <DrawerLogo onClick={onLogoClick} />
 
         <Bar />

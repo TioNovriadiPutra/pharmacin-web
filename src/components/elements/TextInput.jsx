@@ -13,9 +13,10 @@ const TextInput = ({ inputData, control, validationError }) => {
             {inputData.outside && <h3 className="text-sub-title whitespace-nowrap">{inputData.placeholder}</h3>}
 
             <input
-              className={`${validationError && "border-danger"}`}
+              className={`${validationError && "border-danger"} ${inputData.readOnly && "bg-main-background"}`}
               type={inputData.type === "currency" ? "number" : inputData.type}
               placeholder={inputData.outside ? "" : inputData.placeholder}
+              readOnly={inputData.readOnly}
               {...field}
             />
 

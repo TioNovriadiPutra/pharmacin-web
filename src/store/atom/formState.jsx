@@ -20,4 +20,9 @@ const showEditModalState = atom({
   default: false,
 });
 
-export { validationErrorState, showFormModalState, formModalDataState, showEditModalState };
+const cashierDataState = atom({
+  key: "cashierDataState",
+  default: null,
+});
+
+export { validationErrorState, showFormModalState, formModalDataState, showEditModalState, cashierDataState };

@@ -19,6 +19,8 @@ const CurrInput = ({ inputData, control, validationError }) => {
               intlConfig={{ locale: "id-ID", currency: "IDR" }}
               value={field.value}
               onValueChange={(value) => field.onChange(parseInt(value) || 0)}
+              readOnly={inputData.readOnly}
+              className={`${inputData.readOnly && "bg-main-background"}`}
             />
 
             <ErrorMessageInput validationError={validationError} />

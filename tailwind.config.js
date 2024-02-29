@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       flex: {
-        3: "3 3 0%",
+        2: "2 2 0%",
       },
       colors: {
         primary: "#58BE62",
@@ -53,6 +53,7 @@ export default {
         4.25: "17px",
         2.75: "11px",
         5.5: "21px",
+        11.5: "45px",
       },
       width: {
         1.25: "5px",
@@ -62,6 +63,7 @@ export default {
       },
       height: {
         13: "54px",
+        46: "190px",
       },
       gap: {
         12.5: "50px",

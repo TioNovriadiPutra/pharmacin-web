@@ -89,4 +89,49 @@ const tambahPembelianHeader = {
   ],
 };
 
-export { pabrikanHeader, kategoriHeader, kelolaObatHeader, stockHeader, tambahPembelianHeader };
+const kelolaPembelianHeader = {
+  titleData: {
+    title: "Pembelian",
+    subTitle: "/ Kelola Pembelian",
+  },
+  functionData: [
+    {
+      type: "button",
+      label: "Tambah Pembelian",
+    },
+  ],
+};
+
+const pendaftaranHeader = {
+  titleData: {
+    title: "Pendaftaran",
+    subTitle: "/ Daftar Pasien",
+  },
+  functionData: [
+    {
+      type: "button",
+      label: "Daftar Pasien Baru",
+    },
+  ],
+};
+
+const pendaftaranSubHeader = {
+  functionData: [
+    {
+      type: "switch",
+      buttons: [
+        {
+          type: "button",
+          label: "Daftar Antrian",
+        },
+        {
+          type: "button",
+          label: "Data Pasien Terdaftar",
+        },
+      ],
+      onClick: (index) => setRecoil(switchIndexState, index),
+    },
+  ],
+};
+
+export { pabrikanHeader, kategoriHeader, kelolaObatHeader, stockHeader, tambahPembelianHeader, kelolaPembelianHeader, pendaftaranHeader, pendaftaranSubHeader };

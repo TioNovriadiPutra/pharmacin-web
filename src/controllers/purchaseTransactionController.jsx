@@ -1,7 +1,10 @@
 import { addPembelianForm } from "constants/form";
+import { kelolaPembelianHeader } from "constants/header";
+import { formatCurrency } from "helpers/formatter";
 import { showToast } from "helpers/toast";
 import usePurchaseTransactionModel from "models/purchaseTransactionModel";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { setRecoil } from "recoil-nexus";
 import { getDrugFactoryDetail } from "services/drugFactory";
 import { addPurchaseTransaction } from "services/purchaseTransaction";
@@ -9,7 +12,44 @@ import { validationErrorState } from "store/atom/formState";
 import { isLoadingState } from "store/atom/pageState";
 
 const usePurchaseTransactionController = () => {
-  const { useGetPurchaseFactories } = usePurchaseTransactionModel();
+  const nav = useNavigate();
+
+  const { useGetPurchaseTransactions, useGetPurchaseFactories } = usePurchaseTransactionModel();
+
+  const useQueryPurchaseTransactions = () => {
+    const { data, isLoading } = useGetPurchaseTransactions();
+
+    const tableData = {
+      header: ["No Invoice", "Nama Pabrik", "Tanggal", "Total Pembelian", "Tindakan"],
+    };
+
+    if (!isLoading) {
+      Object.assign(tableData, {
+        table: data.data.map((item) => {
+          const data = [item.invoice_number, item.factory_name, item.created_at, formatCurrency(item.total_price)];
+
+          return {
+            id: item.id,
+            data,
+            withAction: [
+              {
+                type: "delete",
+              },
+            ],
+          };
+        }),
+      });
+
+      Object.assign(kelolaPembelianHeader.functionData[0], {
+        onClick: () => nav("/pembelian/tambah"),
+      });
+    }
+
+    return {
+      tableData,
+      isLoading,
+    };
+  };
 
   const useQueryGetPurchaseFactories = () => {
     const { data, isLoading } = useGetPurchaseFactories();
@@ -43,6 +83,7 @@ const usePurchaseTransactionController = () => {
               return {
                 label: item.drug,
                 value: item.id,
+                extra: item.purchase_price,
               };
             }),
           });
@@ -72,9 +113,22 @@ const usePurchaseTransactionController = () => {
   });
 
   return {
+    useQueryPurchaseTransactions,
     useQueryGetPurchaseFactories,
     queryGetPurchaseDrugs,
-    addPurchase: (data) => addPurchaseMutation.mutate(data),
+    addPurchase: async (data) =>
+      await addPurchaseMutation.mutateAsync({
+        factoryId: data.factoryId ? data.factoryId.value : null,
+        totalPrice: data.totalPrice,
+        purchaseItems: data.purchaseItems.map((item) => {
+          return {
+            drugId: item.drugId ? item.drugId.value : null,
+            totalPrice: item.totalPrice,
+            expired: item.expired,
+            quantity: item.quantity,
+          };
+        }),
+      }),
   };
 };
 

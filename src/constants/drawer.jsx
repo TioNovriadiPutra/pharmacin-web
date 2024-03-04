@@ -1,4 +1,19 @@
-import { dashboardActive, dashboardInactive, obatActive, obatInactive, pabrikanActive, pabrikanInactive, pembelianActive, pembelianInactive, stockActive, stockInactive } from "assets/images";
+import {
+  dashboardActive,
+  dashboardInactive,
+  dokterActive,
+  dokterInactive,
+  obatActive,
+  obatInactive,
+  pabrikanActive,
+  pabrikanInactive,
+  pembelianActive,
+  pembelianInactive,
+  pendaftaranActive,
+  pendaftaranInactive,
+  stockActive,
+  stockInactive,
+} from "assets/images";
 
 const drawerList = [
   {
@@ -7,6 +22,27 @@ const drawerList = [
     active: dashboardActive,
     inactive: dashboardInactive,
   },
+];
+
+const drawerListDokter = [
+  ...drawerList,
+  {
+    label: "Dokter",
+    path: "/dokter",
+    active: dokterActive,
+    inactive: dokterInactive,
+  },
+];
+
+const drawerListAdmin = [
+  ...drawerList,
+  {
+    label: "Pendaftaran",
+    path: "/pendaftaran",
+    active: pendaftaranActive,
+    inactive: pendaftaranInactive,
+  },
+
   {
     label: "Stock",
     path: "/stock",
@@ -57,7 +93,7 @@ const drawerList = [
     subMenu: [
       {
         label: "Tambah Pembelian",
-        path: "/pembelian",
+        path: "/pembelian/tambah",
       },
       {
         label: "Kelola Pembelian",
@@ -67,4 +103,4 @@ const drawerList = [
   },
 ];
 
-export { drawerList };
+export { drawerListDokter, drawerListAdmin };

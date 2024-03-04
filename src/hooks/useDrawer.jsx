@@ -1,12 +1,15 @@
 import { useSpringValue } from "@react-spring/web";
+import { drawerListAdmin, drawerListDokter } from "constants/drawer";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { roleState } from "store/atom/authState";
 import { drawerStatusState, drawerSubIndexState } from "store/atom/pageState";
 
 const useDrawer = () => {
   const [drawerStatus, setDrawerStatus] = useRecoilState(drawerStatusState);
-  const setDrawerSubIndex = useSetRecoilState(drawerSubIndexState);
+  const [drawerSubIndex, setDrawerSubIndex] = useRecoilState(drawerSubIndexState);
+  const role = useRecoilValue(roleState);
 
   const location = useLocation();
   const nav = useNavigate();
@@ -16,6 +19,9 @@ const useDrawer = () => {
 
   const onLogoClick = () => {
     setDrawerStatus((prev) => !prev);
+    if (drawerSubIndex > 0) {
+      setDrawerSubIndex(0);
+    }
   };
 
   const onClose = () => {
@@ -30,6 +36,22 @@ const useDrawer = () => {
     } else {
       nav(item.path);
       onClose();
+    }
+  };
+
+  const onProfileMenuClick = () => {
+    if (role === 2) {
+      if (drawerSubIndex === drawerListDokter.length + 1) {
+        setDrawerSubIndex(0);
+      } else {
+        setDrawerSubIndex(drawerListDokter.length + 1);
+      }
+    } else {
+      if (drawerSubIndex === drawerListAdmin.length + 1) {
+        setDrawerSubIndex(0);
+      } else {
+        setDrawerSubIndex(drawerListAdmin.length + 1);
+      }
     }
   };
 
@@ -60,6 +82,7 @@ const useDrawer = () => {
     location,
     onMenuClick,
     nav,
+    onProfileMenuClick,
   };
 };
 

@@ -5,9 +5,14 @@ const tokenState = atom({
   default: null,
 });
 
+const roleState = atom({
+  key: "roleState",
+  default: null,
+});
+
 const paymentStatusState = atom({
   key: "paymentStatusState",
   default: null,
 });
 
-export { tokenState, paymentStatusState };
+export { tokenState, paymentStatusState, roleState };

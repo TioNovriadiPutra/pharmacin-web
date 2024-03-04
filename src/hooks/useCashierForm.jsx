@@ -5,10 +5,9 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 const useCashierForm = () => {
-  const { useQueryGetPurchaseFactories, queryGetPurchaseDrugs, addPurchase } =
-    usePurchaseTransactionController();
+  const { useQueryGetPurchaseFactories, queryGetPurchaseDrugs, addPurchase } = usePurchaseTransactionController();
 
-  const { control, getValues, watch, handleSubmit } = useForm({
+  const { control, getValues, watch, handleSubmit, setValue, reset } = useForm({
     defaultValues: addPembelianForm.defaultValues,
   });
 
@@ -18,7 +17,13 @@ const useCashierForm = () => {
 
   useEffect(() => {
     Object.assign(tambahPembelianHeader.functionData[0], {
-      onClick: handleSubmit(addPurchase),
+      onClick: handleSubmit(async (data) => {
+        const result = await addPurchase(data);
+
+        if (result) {
+          reset(addPembelianForm.defaultValues);
+        }
+      }),
     });
   }, []);
 
@@ -31,6 +36,7 @@ const useCashierForm = () => {
   return {
     control,
     isLoading,
+    setValue,
   };
 };
 

@@ -7,7 +7,7 @@ import { useMutation } from "react-query";
 import { setRecoil } from "recoil-nexus";
 import { addDrug, deleteDrug, getDrugDetail, updateDrug } from "services/drug";
 import { formModalDataState, showFormModalState, validationErrorState } from "store/atom/formState";
-import { detailDataState, editDataState, isLoadingState, showConfirmationModalState, showDetailModalState } from "store/atom/pageState";
+import { deleteDataState, detailDataState, editDataState, isLoadingState, showConfirmationModalState, showDetailModalState } from "store/atom/pageState";
 
 const useDrugController = () => {
   const { useGetDrugs } = useDrugModel();
@@ -42,7 +42,7 @@ const useDrugController = () => {
                 type: "delete",
                 onClick: (id) => {
                   setRecoil(showConfirmationModalState, true);
-                  setRecoil(editDataState, {
+                  setRecoil(deleteDataState, {
                     onApprove: () => deleteDrugMutation.mutate(id),
                   });
                 },
@@ -258,7 +258,7 @@ const useDrugController = () => {
     },
     onSettled: () => {
       setRecoil(isLoadingState, false);
-      setRecoil(editDataState, null);
+      setRecoil(deleteDataState, null);
       setRecoil(showConfirmationModalState, false);
     },
   });

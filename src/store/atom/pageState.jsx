@@ -10,6 +10,11 @@ const showConfirmationModalState = atom({
   default: false,
 });
 
+const deleteDataState = atom({
+  key: "deleteDataState",
+  default: null,
+});
+
 const editDataState = atom({
   key: "editDataState",
   default: null,
@@ -40,4 +45,26 @@ const switchIndexState = atom({
   default: 0,
 });
 
-export { isLoadingState, showConfirmationModalState, editDataState, detailDataState, showDetailModalState, drawerSubIndexState, drawerStatusState, switchIndexState };
+const showPickDoctorModalState = atom({
+  key: "showPickDoctorModalState",
+  default: false,
+});
+
+const pickDoctorDataState = atom({
+  key: "pickDoctorDataState",
+  default: null,
+});
+
+export {
+  isLoadingState,
+  showConfirmationModalState,
+  editDataState,
+  detailDataState,
+  showDetailModalState,
+  drawerSubIndexState,
+  drawerStatusState,
+  switchIndexState,
+  deleteDataState,
+  showPickDoctorModalState,
+  pickDoctorDataState,
+};

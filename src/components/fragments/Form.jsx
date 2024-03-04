@@ -6,13 +6,12 @@ import { validationErrorState } from "store/atom/formState";
 import DropdownInput from "components/elements/DropdownInput";
 import CurrInput from "components/elements/CurrInput";
 import ScrollContainer from "containers/ScrollContainer";
-import CartInput from "./CartInput";
 
-const Form = ({ formData, control, onSubmit, styles }) => {
+const Form = ({ formData, control, onSubmit, styles, containerStyles }) => {
   const validationError = useRecoilValue(validationErrorState);
 
   return (
-    <div className="flex-1 gap-8.5">
+    <div className={`flex-1 gap-8.5 ${containerStyles}`}>
       {formData.title && <h1 className="text-dark-blue text-center whitespace-nowrap">{formData.title}</h1>}
 
       <form className="flex-1" onSubmit={onSubmit}>
@@ -24,8 +23,6 @@ const Form = ({ formData, control, onSubmit, styles }) => {
               return <DropdownInput key={index.toString()} inputData={item} control={control} validationError={validationError && validationError.find((item) => item.field === item.name)} />;
             } else if (item.type === "currency") {
               return <CurrInput key={index.toString()} inputData={item} control={control} validationError={validationError && validationError.find((tmp) => tmp.field === item.name)} />;
-            } else if (item.type === "cart") {
-              return <CartInput key={index.toString()} cartData={formData} control={control} />;
             }
           })}
         </ScrollContainer>
@@ -43,4 +40,5 @@ Form.propTypes = {
   control: PropTypes.any,
   onSubmit: PropTypes.func,
   styles: PropTypes.string,
+  containerStyles: PropTypes.string,
 };

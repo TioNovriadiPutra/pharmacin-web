@@ -2,10 +2,10 @@ import { showToast } from "helpers/toast";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { setRecoil } from "recoil-nexus";
-import { login, register } from "services/auth";
-import { paymentStatusState, tokenState } from "store/atom/authState";
+import { login, logout, register } from "services/auth";
+import { paymentStatusState, roleState, tokenState } from "store/atom/authState";
 import { validationErrorState } from "store/atom/formState";
-import { isLoadingState } from "store/atom/pageState";
+import { drawerStatusState, isLoadingState } from "store/atom/pageState";
 
 const useAuthController = () => {
   const nav = useNavigate();
@@ -18,11 +18,10 @@ const useAuthController = () => {
     onSuccess: (response) => {
       setRecoil(tokenState, response.token.token);
       setRecoil(paymentStatusState, response.paymentStatus);
+      setRecoil(roleState, response.roleId);
       localStorage.setItem("@token", response.token.token);
-      localStorage.setItem(
-        "@paymentStatus",
-        JSON.stringify(response.paymentStatus)
-      );
+      localStorage.setItem("@paymentStatus", JSON.stringify(response.paymentStatus));
+      localStorage.setItem("@role", JSON.stringify(response.roleId));
       showToast("success", response.message);
     },
     onError: (error) => {
@@ -56,24 +55,39 @@ const useAuthController = () => {
     },
   });
 
-  const useLogout = async () => {
-    setRecoil(isLoadingState, true);
-
-    localStorage.removeItem("@token");
-    localStorage.removeItem("@paymentStatus");
-    setRecoil(tokenState, null);
-    setRecoil(paymentStatusState, null);
-
-    setRecoil(isLoadingState, false);
-  };
+  const logoutMutation = useMutation(logout, {
+    onMutate: () => {
+      setRecoil(isLoadingState, true);
+    },
+    onSuccess: (response) => {
+      localStorage.removeItem("@token");
+      localStorage.removeItem("@paymentStatus");
+      localStorage.removeItem("@role");
+      setRecoil(tokenState, null);
+      setRecoil(paymentStatusState, null);
+      setRecoil(roleState, null);
+      setRecoil(drawerStatusState, false);
+      showToast("success", response.message);
+    },
+    onError: (error) => {
+      showToast("failed", error.error.message);
+    },
+    onSettled: () => {
+      setRecoil(isLoadingState, false);
+    },
+  });
 
   const useIsLoggedIn = () => {
     setRecoil(isLoadingState, true);
 
-    const response = localStorage.getItem("@token");
+    const token = localStorage.getItem("@token");
+    const role = localStorage.getItem("@role");
+    const paymentStatus = localStorage.getItem("@paymentStatus");
 
-    if (response) {
-      setRecoil(tokenState, response);
+    if (token && role && paymentStatus) {
+      setRecoil(tokenState, token);
+      setRecoil(roleState, JSON.parse(role));
+      setRecoil(paymentStatusState, JSON.parse(paymentStatus));
     }
 
     setRecoil(isLoadingState, false);
@@ -86,9 +100,20 @@ const useAuthController = () => {
         ...data,
         gender: data.gender ? data.gender.value : null,
       }),
-    useLogout,
+    logout: () => logoutMutation.mutate(),
     useIsLoggedIn,
   };
 };
 
 export default useAuthController;
+
+// async () => {
+//     setRecoil(isLoadingState, true);
+
+//     localStorage.removeItem("@token");
+//     localStorage.removeItem("@paymentStatus");
+//     setRecoil(tokenState, null);
+//     setRecoil(paymentStatusState, null);
+
+//     setRecoil(isLoadingState, false);
+//   };

@@ -1,17 +1,17 @@
 import { useRecoilState } from "recoil";
-import { editDataState, showConfirmationModalState } from "store/atom/pageState";
+import { deleteDataState, showConfirmationModalState } from "store/atom/pageState";
 
 const useConfirmation = () => {
   const [showConfirmationModal, setShowConfirmationModal] = useRecoilState(showConfirmationModalState);
-  const [editData, setEditData] = useRecoilState(editDataState);
+  const [deleteData, setDeleteData] = useRecoilState(deleteDataState);
 
   const onClose = () => {
     setShowConfirmationModal(false);
-    setEditData(null);
+    setDeleteData(null);
   };
 
   const onApprove = () => {
-    editData.onApprove();
+    deleteData.onApprove();
   };
 
   return {

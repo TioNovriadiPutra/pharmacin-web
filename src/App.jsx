@@ -9,10 +9,12 @@ import useAuthController from "controllers/authController";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import AppRoute from "routes/AppRoute";
+import { roleState } from "store/atom/authState";
 import { isLoggedInSelector } from "store/selector/authSelector";
 
 const App = () => {
   const isLoggedIn = useRecoilValue(isLoggedInSelector);
+  const role = useRecoilValue(roleState);
 
   const { useIsLoggedIn } = useAuthController();
 
@@ -30,7 +32,7 @@ const App = () => {
 
         <Route path="register" element={isLoggedIn ? <Navigate to="/" /> : <Register />} />
 
-        {isLoggedIn ? <Route path="/*" element={<AppRoute />} /> : <Route path="*" element={<Navigate to="login" />} />}
+        {isLoggedIn ? <Route path="/*" element={<AppRoute role={role} />} /> : <Route path="*" element={<Navigate to="login" />} />}
       </Routes>
 
       <Toast />

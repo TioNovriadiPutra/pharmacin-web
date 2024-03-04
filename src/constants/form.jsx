@@ -238,7 +238,7 @@ const addObatForm = {
 
 const addPembelianForm = {
   pembelian1: {
-    type: "pembelian-cashier",
+    type: "form",
     inputs: [
       {
         type: "dropdown",
@@ -257,7 +257,7 @@ const addPembelianForm = {
     ],
   },
   pembelian2: {
-    type: "pembelian-cashier",
+    type: "form",
     inputs: [
       {
         type: "currency",
@@ -269,7 +269,7 @@ const addPembelianForm = {
     ],
   },
   pembelian3: {
-    type: "pembelian-cashier",
+    type: "cart",
     header: ["Nama Obat", "Kadaluarsa", "QTY", "Harga", "Total", "Tindakan"],
     inputs: [
       {
@@ -330,11 +330,19 @@ const addPembelianForm = {
   },
 };
 
-export {
-  loginForm,
-  registerForm,
-  addPabrikForm,
-  addKategoriForm,
-  addObatForm,
-  addPembelianForm,
+const pickDoctorForm = {
+  type: "pickDoctor",
+  inputs: [
+    {
+      type: "dropdown",
+      name: "doctorId",
+      placeholder: "Pilih Dokter",
+      items: [],
+    },
+  ],
+  defaultValues: {
+    doctorId: null,
+  },
 };
+
+export { loginForm, registerForm, addPabrikForm, addKategoriForm, addObatForm, addPembelianForm, pickDoctorForm };

@@ -5,13 +5,13 @@ import Container from "containers/Container";
 import useCashierForm from "hooks/useCashierForm";
 
 const TambahPembelian = () => {
-  const { control, isLoading } = useCashierForm();
+  const { control, isLoading, setValue } = useCashierForm();
 
   return (
     <Container>
       <PageHeader headerData={tambahPembelianHeader} />
 
-      <CashierForm control={control} isLoading={isLoading} />
+      <CashierForm control={control} isLoading={isLoading} setValue={setValue} />
     </Container>
   );
 };

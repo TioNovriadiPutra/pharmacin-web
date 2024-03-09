@@ -15,7 +15,7 @@ const DetailModal = () => {
         <animated.div style={{ width: detailAnim }} className="bg-white h-full rounded-tl-md rounded-bl-md px-3.5 overflow-hidden pt-9 pb-6 relative">
           <BackButton styles="top-8.5 left-8" onClick={onClose} />
 
-          <Detail detailData={detailData} />
+          <Detail detailData={detailData} contentStyles="mx-8" />
         </animated.div>
       </ModalContainer>
     );

@@ -16,3 +16,31 @@ export const getUserProfile = async () => {
     throw error.response.data;
   }
 };
+
+export const getAdministrators = async () => {
+  try {
+    const response = await axios.get(ENDPOINT.getAdministrators, {
+      headers: {
+        Authorization: `Bearer ${getRecoil(tokenState)}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const deleteAdministrator = async (id) => {
+  try {
+    const response = await axios.delete(`${ENDPOINT.getAdministrators}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${getRecoil(tokenState)}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};

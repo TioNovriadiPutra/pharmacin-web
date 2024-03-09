@@ -3,6 +3,8 @@ import {
   dashboardInactive,
   dokterActive,
   dokterInactive,
+  manajemenActive,
+  manajemenInactive,
   obatActive,
   obatInactive,
   pabrikanActive,
@@ -34,7 +36,7 @@ const drawerListDokter = [
   },
 ];
 
-const drawerListAdmin = [
+const drawerListAdministrator = [
   ...drawerList,
   {
     label: "Pendaftaran",
@@ -103,4 +105,40 @@ const drawerListAdmin = [
   },
 ];
 
-export { drawerListDokter, drawerListAdmin };
+const drawerListAdmin = [
+  ...drawerListAdministrator,
+  {
+    label: "Manajemen",
+    path: "/manajemen",
+    active: manajemenActive,
+    inactive: manajemenInactive,
+    subMenu: [
+      {
+        label: "Klinik",
+        path: "/manajemen/klinik",
+      },
+      {
+        label: "Administrator",
+        path: "/manajemen/administrator",
+      },
+      {
+        label: "Karyawan",
+        path: "/manajemen/karyawan",
+      },
+      {
+        label: "Dokter",
+        path: "/manajemen/dokter",
+      },
+      {
+        label: "Asisten Dokter",
+        path: "/manajemen/asisten",
+      },
+      {
+        label: "Riwayat Kasir",
+        path: "/manajemen/kasir",
+      },
+    ],
+  },
+];
+
+export { drawerListDokter, drawerListAdmin, drawerListAdministrator };

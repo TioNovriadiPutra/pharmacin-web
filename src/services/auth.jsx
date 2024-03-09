@@ -33,6 +33,22 @@ export const register = async (data) => {
   }
 };
 
+export const registerAdministrator = async (data) => {
+  try {
+    const response = await axios.post(ENDPOINT.registerAdministrator, data, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getRecoil(tokenState)}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
 export const logout = async () => {
   try {
     const response = await axios.get(ENDPOINT.logout, {

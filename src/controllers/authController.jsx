@@ -1,15 +1,17 @@
+import { queryClient } from "config/query";
 import { showToast } from "helpers/toast";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { setRecoil } from "recoil-nexus";
-import { login, logout, register } from "services/auth";
+import { login, logout, register, registerAdministrator } from "services/auth";
 import { paymentStatusState, roleState, tokenState } from "store/atom/authState";
-import { validationErrorState } from "store/atom/formState";
-import { drawerStatusState, isLoadingState } from "store/atom/pageState";
+import { formModalDataState, showFormModalState, validationErrorState } from "store/atom/formState";
+import { drawerStatusState, drawerSubIndexState, isLoadingState } from "store/atom/pageState";
 
 const useAuthController = () => {
   const nav = useNavigate();
 
+  // POST - Login - Access : All
   const loginMutation = useMutation(login, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
@@ -36,6 +38,7 @@ const useAuthController = () => {
     },
   });
 
+  // POST - Register Clinic and Owner - Access : Guest
   const registerAdminMutation = useMutation(register, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
@@ -55,6 +58,29 @@ const useAuthController = () => {
     },
   });
 
+  // POST - Register Administrator Employee - Access : Admin
+  const registerAdministratorMutation = useMutation(registerAdministrator, {
+    onMutate: () => {
+      setRecoil(isLoadingState, true);
+      setRecoil(validationErrorState, null);
+    },
+    onSuccess: (response) => {
+      showToast("success", response.message);
+      setRecoil(formModalDataState, null);
+      setRecoil(showFormModalState, false);
+      queryClient.invalidateQueries({ queryKey: ["getAdministrators"] });
+    },
+    onError: (error) => {
+      if (error.error.status === 422) {
+        setRecoil(validationErrorState, error.error.message);
+      }
+    },
+    onSettled: () => {
+      setRecoil(isLoadingState, false);
+    },
+  });
+
+  // GET - Logout - Access : All
   const logoutMutation = useMutation(logout, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
@@ -67,6 +93,7 @@ const useAuthController = () => {
       setRecoil(paymentStatusState, null);
       setRecoil(roleState, null);
       setRecoil(drawerStatusState, false);
+      setRecoil(drawerSubIndexState, 0);
       showToast("success", response.message);
     },
     onError: (error) => {
@@ -100,20 +127,14 @@ const useAuthController = () => {
         ...data,
         gender: data.gender ? data.gender.value : null,
       }),
+    registerAdministrator: (data) =>
+      registerAdministratorMutation.mutate({
+        ...data,
+        gender: data.gender ? data.gender.value : null,
+      }),
     logout: () => logoutMutation.mutate(),
     useIsLoggedIn,
   };
 };
 
 export default useAuthController;
-
-// async () => {
-//     setRecoil(isLoadingState, true);
-
-//     localStorage.removeItem("@token");
-//     localStorage.removeItem("@paymentStatus");
-//     setRecoil(tokenState, null);
-//     setRecoil(paymentStatusState, null);
-
-//     setRecoil(isLoadingState, false);
-//   };

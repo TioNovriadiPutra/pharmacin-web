@@ -1,11 +1,6 @@
 import { setRecoil } from "recoil-nexus";
 import { formModalDataState, showFormModalState } from "store/atom/formState";
-import {
-  addKategoriForm,
-  addObatForm,
-  addPabrikForm,
-  addPatientForm,
-} from "./form";
+import { addAdministratorForm, addKategoriForm, addObatForm, addPabrikForm, addPatientForm, editKlinikForm } from "./form";
 import { switchIndexState } from "store/atom/pageState";
 
 const pabrikanHeader = {
@@ -143,6 +138,40 @@ const pendaftaranSubHeader = {
   ],
 };
 
+const manajemenKlinikHeader = {
+  titleData: {
+    title: "Manajemen",
+    subTitle: "/ Klinik",
+  },
+  functionData: [
+    {
+      type: "button",
+      label: "Edit Informasi",
+      onClick: () => {
+        setRecoil(formModalDataState, editKlinikForm);
+        setRecoil(showFormModalState, true);
+      },
+    },
+  ],
+};
+
+const manajemenAdministratorHeader = {
+  titleData: {
+    title: "Manajemen",
+    subTitle: "/ Administrator",
+  },
+  functionData: [
+    {
+      type: "button",
+      label: "Tambah Akun",
+      onClick: () => {
+        setRecoil(formModalDataState, addAdministratorForm);
+        setRecoil(showFormModalState, true);
+      },
+    },
+  ],
+};
+
 export {
   pabrikanHeader,
   kategoriHeader,
@@ -152,4 +181,6 @@ export {
   kelolaPembelianHeader,
   pendaftaranHeader,
   pendaftaranSubHeader,
+  manajemenKlinikHeader,
+  manajemenAdministratorHeader,
 };

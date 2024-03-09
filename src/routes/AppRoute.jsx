@@ -13,6 +13,12 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import KelolaPembelian from "components/pages/app/pembelian/KelolaPembelian";
 import PemeriksaanPasien from "components/pages/app/dokter/PemeriksaanPasien";
 import Perawatan from "components/pages/app/dokter/Perawatan";
+import Klinik from "components/pages/app/manajemen/Klinik";
+import Karyawan from "components/pages/app/manajemen/Karyawan";
+import Dokter from "components/pages/app/manajemen/Dokter";
+import AsistenDokter from "components/pages/app/manajemen/AsistenDokter";
+import RiwayatKasir from "components/pages/app/manajemen/RiwayatKasir";
+import Administrator from "components/pages/app/manajemen/Administrator";
 
 const AppRoute = ({ role }) => {
   return (
@@ -35,6 +41,7 @@ const AppRoute = ({ role }) => {
             <Route path="stock/*" element={<StockRoute />} />
             <Route path="pembelian/*" element={<PembelianRoute />} />
             <Route path="pendaftaran" element={<Pendaftaran />} />
+            {role === 1 && <Route path="manajemen/*" element={<ManajemenRoute />} />}
           </>
         )}
 
@@ -66,6 +73,19 @@ const PembelianRoute = () => {
     <Routes>
       <Route path="tambah" element={<TambahPembelian />} />
       <Route path="kelola" element={<KelolaPembelian />} />
+    </Routes>
+  );
+};
+
+const ManajemenRoute = () => {
+  return (
+    <Routes>
+      <Route path="klinik" element={<Klinik />} />
+      <Route path="administrator" element={<Administrator />} />
+      <Route path="karyawan" element={<Karyawan />} />
+      <Route path="dokter" element={<Dokter />} />
+      <Route path="asisten" element={<AsistenDokter />} />
+      <Route path="kasir" element={<RiwayatKasir />} />
     </Routes>
   );
 };

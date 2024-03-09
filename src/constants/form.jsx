@@ -439,13 +439,110 @@ const addPatientForm = {
   },
 };
 
-export {
-  loginForm,
-  registerForm,
-  addPabrikForm,
-  addKategoriForm,
-  addObatForm,
-  addPembelianForm,
-  pickDoctorForm,
-  addPatientForm,
+const editKlinikForm = {
+  type: "editKlinik",
+  title: "Edit Klinik",
+  inputs: [
+    {
+      type: "text",
+      name: "clinicName",
+      placeholder: "Nama Klinik",
+      outside: true,
+    },
+    {
+      type: "text",
+      name: "address",
+      placeholder: "Alamat",
+      outside: true,
+    },
+    {
+      type: "text",
+      name: "clinicPhone",
+      placeholder: "Telepon",
+      outside: true,
+    },
+  ],
+  defaultValues: {
+    clinicName: "",
+    address: "",
+    clinicPhone: "",
+  },
+  submitButton: {
+    type: "submit",
+    label: "Edit Klinik",
+  },
 };
+
+const addAdministratorForm = {
+  type: "addAdministrator",
+  title: "Tambah Administrator",
+  inputs: [
+    {
+      type: "text",
+      name: "fullName",
+      placeholder: "Nama",
+      outside: true,
+    },
+    {
+      type: "dropdown",
+      name: "gender",
+      placeholder: "Jenis Kelamin",
+      outside: true,
+      items: [
+        {
+          label: "Laki-laki",
+          value: "male",
+        },
+        {
+          label: "Perempuan",
+          value: "female",
+        },
+      ],
+    },
+    {
+      type: "text",
+      name: "phone",
+      placeholder: "Handphone",
+      outside: true,
+    },
+    {
+      type: "text",
+      name: "address",
+      placeholder: "Alamat",
+      outside: true,
+    },
+    {
+      type: "text",
+      name: "email",
+      placeholder: "Email",
+      outside: true,
+    },
+    {
+      type: "password",
+      name: "password",
+      placeholder: "Password",
+      outside: true,
+    },
+    {
+      type: "password",
+      name: "password_confirmation",
+      placeholder: "Konfirmasi Password",
+      outside: true,
+    },
+  ],
+  defaultValues: {
+    fullName: "",
+    gender: null,
+    phone: "",
+    address: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+  },
+  submitButton: {
+    type: "submit",
+    label: "Tambah Akun",
+  },
+};
+
+export { loginForm, registerForm, addPabrikForm, addKategoriForm, addObatForm, addPembelianForm, pickDoctorForm, addPatientForm, editKlinikForm, addAdministratorForm };

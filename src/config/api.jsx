@@ -12,6 +12,8 @@ const PATIENT_PREFIX = BASE_URL + "patient";
 const DOCTOR_PREFIX = BASE_URL + "doctor";
 const QUEUE_PREFIX = BASE_URL + "queue";
 const USER_PREFIX = BASE_URL + "user";
+const UNIT_PREFIX = BASE_URL + "unit";
+const OCCUPATION_PREFIX = BASE_URL + "occupation";
 
 export const ENDPOINT = {
   login: AUTH_PREFIX + "/login/desktop",
@@ -28,4 +30,6 @@ export const ENDPOINT = {
   getDoctors: DOCTOR_PREFIX,
   cancelQueue: QUEUE_PREFIX + "/cancel",
   getUserProfile: USER_PREFIX + "/profile",
+  getUnits: UNIT_PREFIX,
+  getOccupations: OCCUPATION_PREFIX,
 };

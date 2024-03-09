@@ -8,11 +8,22 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { setRecoil } from "recoil-nexus";
 import { addDrugFactory, deleteDrugFactory } from "services/drugFactory";
-import { formModalDataState, showFormModalState, validationErrorState } from "store/atom/formState";
-import { deleteDataState, detailDataState, isLoadingState, showConfirmationModalState, showDetailModalState } from "store/atom/pageState";
+import {
+  formModalDataState,
+  showFormModalState,
+  validationErrorState,
+} from "store/atom/formState";
+import {
+  deleteDataState,
+  detailDataState,
+  isLoadingState,
+  showConfirmationModalState,
+  showDetailModalState,
+} from "store/atom/pageState";
 
 const useDrugFactoryController = () => {
-  const { useGetDrugFactories, useGetDrugFactoryDetail } = useDrugFactoryModel();
+  const { useGetDrugFactories, useGetDrugFactoryDetail } =
+    useDrugFactoryModel();
   const nav = useNavigate();
 
   const useQueryGetDrugFactories = () => {
@@ -25,7 +36,11 @@ const useDrugFactoryController = () => {
     if (!isLoading) {
       Object.assign(tableData, {
         table: data.data.map((item) => {
-          const data = [item.factory_name, item.factory_email, item.factory_phone];
+          const data = [
+            item.factory_name,
+            item.factory_email,
+            item.factory_phone,
+          ];
 
           return {
             id: item.id,
@@ -66,7 +81,15 @@ const useDrugFactoryController = () => {
     const { data, isLoading } = useGetDrugFactoryDetail(id);
 
     const tableData = {
-      header: ["Nama Obat", "Nama Generik", "Kategori", "Harga Beli", "Harga Jual", "Takaran", "Stock"],
+      header: [
+        "Nama Obat",
+        "Nama Generik",
+        "Kategori",
+        "Harga Beli",
+        "Harga Jual",
+        "Komposisi",
+        "Stock",
+      ],
       backDest: "/pabrikan",
       onDetailModal: (data) => {
         setRecoil(showDetailModalState, true);
@@ -79,7 +102,15 @@ const useDrugFactoryController = () => {
         title: data.data.factory_name,
         table: data.data.drug_list
           ? data.data.drug_list.map((item) => {
-              const data = [item.drug, item.drug_generic_name || "-", item.category_name, formatCurrency(item.purchase_price), formatCurrency(item.selling_price), item.dose || "-", item.total_stock];
+              const data = [
+                item.drug,
+                item.drug_generic_name || "-",
+                item.category_name,
+                formatCurrency(item.purchase_price),
+                formatCurrency(item.selling_price),
+                item.composition || "-",
+                item.total_stock,
+              ];
 
               return {
                 id: item.id,

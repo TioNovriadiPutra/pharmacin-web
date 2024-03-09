@@ -25,7 +25,27 @@ export const getQueueingPatients = async () => {
 
 export const addPatientQueue = async (data) => {
   try {
-    const response = await axios.post(`${ENDPOINT.getQueueingPatients}/${data.id}`, data.data, {
+    const response = await axios.post(
+      `${ENDPOINT.getQueueingPatients}/${data.id}`,
+      data.data,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getRecoil(tokenState)}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const addPatient = async (data) => {
+  try {
+    const response = await axios.post(ENDPOINT.getPatients, data, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

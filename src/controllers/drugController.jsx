@@ -6,8 +6,19 @@ import useDrugModel from "models/drugModel";
 import { useMutation } from "react-query";
 import { setRecoil } from "recoil-nexus";
 import { addDrug, deleteDrug, getDrugDetail, updateDrug } from "services/drug";
-import { formModalDataState, showFormModalState, validationErrorState } from "store/atom/formState";
-import { deleteDataState, detailDataState, editDataState, isLoadingState, showConfirmationModalState, showDetailModalState } from "store/atom/pageState";
+import {
+  formModalDataState,
+  showFormModalState,
+  validationErrorState,
+} from "store/atom/formState";
+import {
+  deleteDataState,
+  detailDataState,
+  editDataState,
+  isLoadingState,
+  showConfirmationModalState,
+  showDetailModalState,
+} from "store/atom/pageState";
 
 const useDrugController = () => {
   const { useGetDrugs } = useDrugModel();
@@ -18,13 +29,28 @@ const useDrugController = () => {
     const isLoading = results.some((result) => result.isLoading);
 
     const tableData = {
-      header: ["Nama Obat", "Nama Generik", "Kategori", "Rak", "Harga Jual", "Takaran", "Tindakan"],
+      header: [
+        "Nama Obat",
+        "Nama Generik",
+        "Kategori",
+        "Rak",
+        "Harga Jual",
+        "Komposisi",
+        "Tindakan",
+      ],
     };
 
     if (!isLoading) {
       Object.assign(tableData, {
         table: results[0].data.data.map((item) => {
-          const data = [item.drug, item.drug_generic_name, item.category_name, item.shelve, formatCurrency(item.selling_price), item.dose];
+          const data = [
+            item.drug,
+            item.drug_generic_name,
+            item.category_name,
+            item.shelve,
+            formatCurrency(item.selling_price),
+            item.composition,
+          ];
 
           return {
             id: item.id,
@@ -72,11 +98,29 @@ const useDrugController = () => {
                 };
               }),
             });
+          } else if (input.name === "unitId") {
+            Object.assign(input, {
+              items: results[3].data.data.map((item) => {
+                return {
+                  label: item.unit_name,
+                  value: item.id,
+                };
+              }),
+            });
           }
 
           return input;
         }),
-        submitButton: { ...addObatForm.submitButton, onClick: (data) => addDrugMutation.mutate({ ...data, categoryId: data.categoryId.value, factoryId: data.factoryId.value }) },
+        submitButton: {
+          ...addObatForm.submitButton,
+          onClick: (data) =>
+            addDrugMutation.mutate({
+              ...data,
+              categoryId: data.categoryId ? data.categoryId.value : null,
+              factoryId: data.factoryId ? data.factoryId.value : null,
+              unitId: data.categoryId ? data.categoryId.value : null,
+            }),
+        },
       });
     }
 
@@ -117,7 +161,15 @@ const useDrugController = () => {
         setRecoil(showFormModalState, true);
         setRecoil(formModalDataState, formData);
         setRecoil(editDataState, {
-          onApprove: (data) => updateDrugMutation.mutate({ id, data: { ...data, categoryId: data.categoryId.value, factoryId: data.factoryId.value } }),
+          onApprove: (data) =>
+            updateDrugMutation.mutate({
+              id,
+              data: {
+                ...data,
+                categoryId: data.categoryId.value,
+                factoryId: data.factoryId.value,
+              },
+            }),
         });
       })
       .catch((error) => {
@@ -151,8 +203,12 @@ const useDrugController = () => {
               value: response.data.drug_generic_name || "-",
             },
             {
-              title: "Takaran",
-              value: response.data.dose,
+              title: "Satuan",
+              value: response.data.unit_name,
+            },
+            {
+              title: "Komposisi",
+              value: response.data.composition,
             },
             {
               title: "Kategori",

@@ -10,7 +10,7 @@ const AuthForm = ({ type = "login" }) => {
       className="absolute self-center gap-6 my-10.5"
     >
       <img
-        style={{ height: "91px" }}
+        style={{ height: "5.688rem" }}
         src={logoFull}
         alt="logoFull"
         className="object-center"

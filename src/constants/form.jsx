@@ -182,9 +182,16 @@ const addObatForm = {
       outside: true,
     },
     {
-      type: "text",
-      name: "dose",
-      placeholder: "Takaran",
+      type: "dropdown",
+      name: "unitId",
+      placeholder: "Satuan",
+      outside: true,
+      items: [],
+    },
+    {
+      type: "number",
+      name: "composition",
+      placeholder: "Komposisi",
       outside: true,
     },
     {
@@ -345,4 +352,100 @@ const pickDoctorForm = {
   },
 };
 
-export { loginForm, registerForm, addPabrikForm, addKategoriForm, addObatForm, addPembelianForm, pickDoctorForm };
+const addPatientForm = {
+  type: "addPatient",
+  title: "Tambah Pasien",
+  inputs: [
+    {
+      type: "text",
+      name: "fullName",
+      placeholder: "Nama Lengkap",
+      outside: true,
+    },
+    {
+      type: "text",
+      name: "nik",
+      placeholder: "Nomor Induk KTP (NIK)",
+      outside: true,
+    },
+    {
+      type: "text",
+      name: "address",
+      placeholder: "Alamat",
+      outside: true,
+    },
+    {
+      type: "dropdown",
+      name: "gender",
+      placeholder: "Jenis Kelamin",
+      outside: true,
+      items: [
+        {
+          label: "Laki-laki",
+          value: "male",
+        },
+        {
+          label: "Perempuan",
+          value: "female",
+        },
+      ],
+    },
+    {
+      type: "dropdown",
+      name: "occupationId",
+      placeholder: "Jenis Pekerjaan",
+      outside: true,
+      items: [],
+    },
+    {
+      type: "text",
+      name: "pob",
+      placeholder: "Tempat Lahir",
+      outside: true,
+    },
+    {
+      type: "date",
+      name: "dob",
+      placeholder: "Tanggal Lahir",
+      outside: true,
+    },
+    {
+      type: "text",
+      name: "phone",
+      placeholder: "No Handphone",
+      outside: true,
+    },
+    {
+      type: "text",
+      name: "allergy",
+      placeholder: "Allergy",
+      outside: true,
+    },
+  ],
+  defaultValues: {
+    fullName: "",
+    nik: "",
+    address: "",
+    gender: null,
+    occupationId: null,
+    pob: "",
+    dob: "",
+    phone: "",
+    allergy: "",
+  },
+  submitButton: {
+    type: "submit",
+    label: "Tambah Pasien",
+  },
+};
+
+export {
+  loginForm,
+  registerForm,
+  addPabrikForm,
+  addKategoriForm,
+  addObatForm,
+  addPembelianForm,
+  pickDoctorForm,
+  addPatientForm,
+};

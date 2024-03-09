@@ -64,7 +64,7 @@ export default {
         1.25: "5px",
         82: "322px",
         18: "68px",
-        97: "484px",
+        97: "30.25rem",
         98: "542px",
         100: "794px",
         23: "84px",
@@ -88,7 +88,7 @@ export default {
       },
       maxHeight: {
         84: "324px",
-        100: "574px",
+        100: "35.875rem",
       },
       spacing: {
         8.5: "34px",

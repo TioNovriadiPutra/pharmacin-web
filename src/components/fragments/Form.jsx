@@ -12,22 +12,64 @@ const Form = ({ formData, control, onSubmit, styles, containerStyles }) => {
 
   return (
     <div className={`flex-1 gap-8.5 ${containerStyles}`}>
-      {formData.title && <h1 className="text-dark-blue text-center whitespace-nowrap">{formData.title}</h1>}
+      {formData.title && (
+        <h1 className="text-dark-blue text-center whitespace-nowrap">
+          {formData.title}
+        </h1>
+      )}
 
       <form className="flex-1" onSubmit={onSubmit}>
         <ScrollContainer styles={`gap-6 ${styles}`}>
           {formData.inputs.map((item, index) => {
-            if (item.type === "text" || item.type === "email" || item.type === "password" || item.type === "date") {
-              return <TextInput key={index.toString()} inputData={item} control={control} validationError={validationError && validationError.find((tmp) => tmp.field === item.name)} />;
+            if (
+              item.type === "text" ||
+              item.type === "email" ||
+              item.type === "password" ||
+              item.type === "date" ||
+              item.type === "number"
+            ) {
+              return (
+                <TextInput
+                  key={index.toString()}
+                  inputData={item}
+                  control={control}
+                  validationError={
+                    validationError &&
+                    validationError.find((tmp) => tmp.field === item.name)
+                  }
+                />
+              );
             } else if (item.type === "dropdown") {
-              return <DropdownInput key={index.toString()} inputData={item} control={control} validationError={validationError && validationError.find((item) => item.field === item.name)} />;
+              return (
+                <DropdownInput
+                  key={index.toString()}
+                  inputData={item}
+                  control={control}
+                  validationError={
+                    validationError &&
+                    validationError.find((tmp) => tmp.field === item.name)
+                  }
+                />
+              );
             } else if (item.type === "currency") {
-              return <CurrInput key={index.toString()} inputData={item} control={control} validationError={validationError && validationError.find((tmp) => tmp.field === item.name)} />;
+              return (
+                <CurrInput
+                  key={index.toString()}
+                  inputData={item}
+                  control={control}
+                  validationError={
+                    validationError &&
+                    validationError.find((tmp) => tmp.field === item.name)
+                  }
+                />
+              );
             }
           })}
         </ScrollContainer>
 
-        {formData.submitButton && <FormFooter buttonData={formData.submitButton} />}
+        {formData.submitButton && (
+          <FormFooter buttonData={formData.submitButton} />
+        )}
       </form>
     </div>
   );

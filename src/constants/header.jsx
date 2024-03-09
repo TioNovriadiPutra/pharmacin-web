@@ -1,6 +1,11 @@
 import { setRecoil } from "recoil-nexus";
 import { formModalDataState, showFormModalState } from "store/atom/formState";
-import { addKategoriForm, addObatForm, addPabrikForm } from "./form";
+import {
+  addKategoriForm,
+  addObatForm,
+  addPabrikForm,
+  addPatientForm,
+} from "./form";
 import { switchIndexState } from "store/atom/pageState";
 
 const pabrikanHeader = {
@@ -111,6 +116,10 @@ const pendaftaranHeader = {
     {
       type: "button",
       label: "Daftar Pasien Baru",
+      onClick: () => {
+        setRecoil(formModalDataState, addPatientForm);
+        setRecoil(showFormModalState, true);
+      },
     },
   ],
 };
@@ -134,4 +143,13 @@ const pendaftaranSubHeader = {
   ],
 };
 
-export { pabrikanHeader, kategoriHeader, kelolaObatHeader, stockHeader, tambahPembelianHeader, kelolaPembelianHeader, pendaftaranHeader, pendaftaranSubHeader };
+export {
+  pabrikanHeader,
+  kategoriHeader,
+  kelolaObatHeader,
+  stockHeader,
+  tambahPembelianHeader,
+  kelolaPembelianHeader,
+  pendaftaranHeader,
+  pendaftaranSubHeader,
+};

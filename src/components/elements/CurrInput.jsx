@@ -11,7 +11,11 @@ const CurrInput = ({ inputData, control, validationError }) => {
       render={({ field }) => {
         return (
           <div className="gap-0.5 relative">
-            {inputData.outside && <h3 className="text-sub-title whitespace-nowrap">{inputData.placeholder}</h3>}
+            {inputData.outside && (
+              <h3 className="text-sub-title whitespace-nowrap">
+                {inputData.placeholder}
+              </h3>
+            )}
 
             <CurrencyInput
               prefix="Rp."
@@ -20,7 +24,9 @@ const CurrInput = ({ inputData, control, validationError }) => {
               value={field.value}
               onValueChange={(value) => field.onChange(parseInt(value) || 0)}
               readOnly={inputData.readOnly}
-              className={`${inputData.readOnly && "bg-main-background"}`}
+              className={`${inputData.readOnly && "bg-main-background"} ${
+                validationError && "border-danger"
+              }`}
             />
 
             <ErrorMessageInput validationError={validationError} />

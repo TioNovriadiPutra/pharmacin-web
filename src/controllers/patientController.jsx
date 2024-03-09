@@ -1,13 +1,24 @@
 import { queryClient } from "config/query";
-import { pickDoctorForm } from "constants/form";
+import { addPatientForm, pickDoctorForm } from "constants/form";
 import { showToast } from "helpers/toast";
 import usePatientModel from "models/patientModel";
 import { useMutation } from "react-query";
 import { setRecoil } from "recoil-nexus";
 import { getDoctors } from "services/doctor";
-import { addPatientQueue } from "services/patient";
-import { deleteDataState, isLoadingState, pickDoctorDataState, showConfirmationModalState, showPickDoctorModalState } from "store/atom/pageState";
+import { addPatient, addPatientQueue } from "services/patient";
+import {
+  deleteDataState,
+  isLoadingState,
+  pickDoctorDataState,
+  showConfirmationModalState,
+  showPickDoctorModalState,
+} from "store/atom/pageState";
 import useQueueController from "./queueController";
+import {
+  formModalDataState,
+  showFormModalState,
+  validationErrorState,
+} from "store/atom/formState";
 
 const usePatientController = () => {
   const { useGetPatients } = usePatientModel();
@@ -19,22 +30,52 @@ const usePatientController = () => {
     const isLoading = results.some((result) => result.isLoading);
 
     const tableData = [
-      { header: ["Nomor Registrasi", "Nama Pasien", "No. RM", "J. Kelamin", "Tgl. Daftar", "Status", "Tindakan"] },
-      { header: ["Nama Pasien", "No. RM", "No. Handphone", "Alamat", "J. Kelamin", "Tgl. Lahir", "Tindakan"] },
+      {
+        header: [
+          "Nomor Registrasi",
+          "Nama Pasien",
+          "No. RM",
+          "J. Kelamin",
+          "Tgl. Daftar",
+          "Status",
+          "Tindakan",
+        ],
+      },
+      {
+        header: [
+          "Nama Pasien",
+          "No. RM",
+          "No. Handphone",
+          "Alamat",
+          "J. Kelamin",
+          "Tgl. Lahir",
+          "Tindakan",
+        ],
+      },
     ];
 
     if (!isLoading) {
       Object.assign(tableData[0], {
         table: results[0].data.data.map((item) => {
-          const data = [item.registration_number, item.full_name, item.record_number, item.gender, item.created_at];
+          const data = [
+            item.registration_number,
+            item.full_name,
+            item.record_number,
+            item.gender,
+            item.created_at,
+          ];
 
           return {
             id: item.id,
             data,
             withStatus: {
               label: item.status,
-              color: item.status.includes("wait") ? "bg-light-primary" : "bg-light-danger",
-              textColor: item.status.includes("wait") ? "text-primary" : "text-danger",
+              color: item.status.includes("wait")
+                ? "bg-light-primary"
+                : "bg-light-danger",
+              textColor: item.status.includes("wait")
+                ? "text-primary"
+                : "text-danger",
             },
             withAction: [
               {
@@ -53,7 +94,14 @@ const usePatientController = () => {
 
       Object.assign(tableData[1], {
         table: results[1].data.data.map((item) => {
-          const data = [item.full_name, item.record_number, item.phone, item.address, item.gender, item.date_birth];
+          const data = [
+            item.full_name,
+            item.record_number,
+            item.phone,
+            item.address,
+            item.gender,
+            item.date_birth,
+          ];
 
           return {
             id: item.id,
@@ -68,13 +116,45 @@ const usePatientController = () => {
                   queryGetDoctorsDropdown({
                     id: item.id,
                     name: item.full_name,
-                    onApprove: (data) => addPatientQueueMutation.mutate({ id: item.id, data: { doctorId: data.doctorId ? data.doctorId.value : null } }),
+                    onApprove: (data) =>
+                      addPatientQueueMutation.mutate({
+                        id: item.id,
+                        data: {
+                          doctorId: data.doctorId ? data.doctorId.value : null,
+                        },
+                      }),
                   });
                 },
               },
             ],
           };
         }),
+      });
+
+      Object.assign(addPatientForm, {
+        inputs: addPatientForm.inputs.map((input) => {
+          if (input.name === "occupationId") {
+            Object.assign(input, {
+              items: results[2].data.data.map((item) => {
+                return {
+                  label: item.occupation_name,
+                  value: item.id,
+                };
+              }),
+            });
+          }
+
+          return input;
+        }),
+        submitButton: {
+          ...addPatientForm.submitButton,
+          onClick: (data) =>
+            addPatientMutation.mutate({
+              ...data,
+              gender: data.gender ? data.gender.value : null,
+              occupationId: data.occupationId ? data.occupationId.value : null,
+            }),
+        },
       });
     }
 
@@ -126,6 +206,29 @@ const usePatientController = () => {
       setRecoil(isLoadingState, false);
       setRecoil(pickDoctorDataState, null);
       setRecoil(showPickDoctorModalState, false);
+    },
+  });
+
+  const addPatientMutation = useMutation(addPatient, {
+    onMutate: () => {
+      setRecoil(isLoadingState, true);
+      setRecoil(validationErrorState, null);
+    },
+    onSuccess: (response) => {
+      showToast("success", response.message);
+      setRecoil(formModalDataState, null);
+      setRecoil(showFormModalState, false);
+      queryClient.invalidateQueries({ queryKey: ["getPatients"] });
+    },
+    onError: (error) => {
+      if (error.error.status === 422) {
+        setRecoil(validationErrorState, error.error.message);
+      } else if (error.error.status === 403) {
+        showToast("failed", error.error.message);
+      }
+    },
+    onSettled: () => {
+      setRecoil(isLoadingState, false);
     },
   });
 

@@ -6,51 +6,26 @@ import useDrugModel from "models/drugModel";
 import { useMutation } from "react-query";
 import { setRecoil } from "recoil-nexus";
 import { addDrug, deleteDrug, getDrugDetail, updateDrug } from "services/drug";
-import {
-  formModalDataState,
-  showFormModalState,
-  validationErrorState,
-} from "store/atom/formState";
-import {
-  deleteDataState,
-  detailDataState,
-  editDataState,
-  isLoadingState,
-  showConfirmationModalState,
-  showDetailModalState,
-} from "store/atom/pageState";
+import { formModalDataState, showFormModalState, validationErrorState } from "store/atom/formState";
+import { deleteDataState, detailDataState, isLoadingState, showConfirmationModalState, showDetailModalState } from "store/atom/pageState";
 
 const useDrugController = () => {
   const { useGetDrugs } = useDrugModel();
 
+  // GET -Get Clinic drugs - Access : Admin,Administrator
   const useQueryGetDrugs = () => {
     const results = useGetDrugs();
 
     const isLoading = results.some((result) => result.isLoading);
 
     const tableData = {
-      header: [
-        "Nama Obat",
-        "Nama Generik",
-        "Kategori",
-        "Rak",
-        "Harga Jual",
-        "Komposisi",
-        "Tindakan",
-      ],
+      header: ["Nama Obat", "Nama Generik", "Kategori", "Rak", "Harga Jual", "Komposisi", "Tindakan"],
     };
 
     if (!isLoading) {
       Object.assign(tableData, {
         table: results[0].data.data.map((item) => {
-          const data = [
-            item.drug,
-            item.drug_generic_name,
-            item.category_name,
-            item.shelve,
-            formatCurrency(item.selling_price),
-            item.composition,
-          ];
+          const data = [item.drug, item.drug_generic_name, item.category_name, item.shelve, formatCurrency(item.selling_price), item.composition];
 
           return {
             id: item.id,
@@ -130,6 +105,7 @@ const useDrugController = () => {
     };
   };
 
+  // GET - Get Drug Update Form Data - Access : Admin,Administrator
   const queryGetDrugUpdateForm = async (id) => {
     setRecoil(isLoadingState, true);
 
@@ -138,50 +114,46 @@ const useDrugController = () => {
     await getDrugDetail(id)
       .then((response) => {
         Object.assign(formData, {
-          type: formData.type + "-edit",
           title: "Edit Obat",
           defaultValues: {
             drug: response.data.drug,
             drugGenericName: response.data.drug_generic_name,
-            dose: response.data.dose,
-            categoryId: {
-              label: response.data.drug_category.category_name,
-              value: response.data.drug_category.id,
-            },
+            unitId: response.data.unit,
+            composition: response.data.composition,
+            categoryId: response.data.drug_category,
             shelve: response.data.shelve,
-            factoryId: {
-              label: response.data.drug_factory.factory_name,
-              value: response.data.drug_factory.id,
-            },
+            factoryId: response.data.drug_factory,
             purchasePrice: response.data.purchase_price,
             sellingPrice: response.data.selling_price,
+          },
+          submitButton: {
+            ...formData.submitButton,
+            label: "Edit Obat",
+            onClick: (data) =>
+              updateDrugMutation.mutate({
+                id,
+                data: {
+                  ...data,
+                  categoryId: data.categoryId ? data.categoryId.value : null,
+                  factoryId: data.factoryId ? data.factoryId.value : null,
+                  unitId: data.unitId ? data.unitId.value : null,
+                },
+              }),
           },
         });
 
         setRecoil(showFormModalState, true);
         setRecoil(formModalDataState, formData);
-        setRecoil(editDataState, {
-          onApprove: (data) =>
-            updateDrugMutation.mutate({
-              id,
-              data: {
-                ...data,
-                categoryId: data.categoryId.value,
-                factoryId: data.factoryId.value,
-              },
-            }),
-        });
       })
       .catch((error) => {
-        if (error.error.status === 404) {
-          showToast("failed", error.error.message);
-        }
+        showToast("failed", error.error.message);
       })
       .finally(() => {
         setRecoil(isLoadingState, false);
       });
   };
 
+  // GET - Get Clinic Drug Detail - Access : Admin,Administrator
   const queryGetDrugDetail = async (id) => {
     setRecoil(isLoadingState, true);
 
@@ -212,7 +184,7 @@ const useDrugController = () => {
             },
             {
               title: "Kategori",
-              value: response.data.drug_category.category_name,
+              value: response.data.drug_category.label,
             },
             {
               title: "Rak",
@@ -220,7 +192,7 @@ const useDrugController = () => {
             },
             {
               title: "Pabrikan",
-              value: response.data.drug_factory.factory_name,
+              value: response.data.drug_factory.label,
             },
             {
               title: "Harga Beli Pabrikan",
@@ -245,15 +217,14 @@ const useDrugController = () => {
         setRecoil(detailDataState, detailData);
       })
       .catch((error) => {
-        if (error.error.status === 404) {
-          showToast("failed", error.error.message);
-        }
+        showToast("failed", error.error.message);
       })
       .finally(() => {
         setRecoil(isLoadingState, false);
       });
   };
 
+  // POST - Add Clinic New Drug Data - Access : Admin,Administrator
   const addDrugMutation = useMutation(addDrug, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
@@ -268,6 +239,10 @@ const useDrugController = () => {
     onError: (error) => {
       if (error.error.status === 422) {
         setRecoil(validationErrorState, error.error.message);
+      } else {
+        showToast("failed", error.error.message);
+        setRecoil(formModalDataState, null);
+        setRecoil(showFormModalState, false);
       }
     },
     onSettled: () => {
@@ -275,6 +250,7 @@ const useDrugController = () => {
     },
   });
 
+  // PUT - Update Clinic Drug Data - Access : Admin,Administrator
   const updateDrugMutation = useMutation(updateDrug, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
@@ -284,14 +260,15 @@ const useDrugController = () => {
       showToast("success", response.message);
       setRecoil(formModalDataState, null);
       setRecoil(showFormModalState, false);
-      setRecoil(editDataState, null);
       queryClient.invalidateQueries({ queryKey: ["getDrugs"] });
     },
     onError: (error) => {
       if (error.error.status === 422) {
         setRecoil(validationErrorState, error.error.message);
-      } else if (error.error.status === 404) {
+      } else {
         showToast("failed", error.error.message);
+        setRecoil(formModalDataState, null);
+        setRecoil(showFormModalState, false);
       }
     },
     onSettled: () => {
@@ -299,6 +276,7 @@ const useDrugController = () => {
     },
   });
 
+  // DELETE - Delete Clinic Drug Data - Access : Admin,Administrator
   const deleteDrugMutation = useMutation(deleteDrug, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
@@ -308,9 +286,7 @@ const useDrugController = () => {
       queryClient.invalidateQueries({ queryKey: ["getDrugs"] });
     },
     onError: (error) => {
-      if (error.error.status === 404) {
-        showToast("failed", error.error.message);
-      }
+      showToast("failed", error.error.message);
     },
     onSettled: () => {
       setRecoil(isLoadingState, false);

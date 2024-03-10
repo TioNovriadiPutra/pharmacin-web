@@ -6,11 +6,12 @@ import { useMutation } from "react-query";
 import { setRecoil } from "recoil-nexus";
 import { addDrugCategory, deleteDrugCategory, getDrugCategoryDetail, updateDrugCategory } from "services/drugCategory";
 import { formModalDataState, showFormModalState, validationErrorState } from "store/atom/formState";
-import { deleteDataState, editDataState, isLoadingState, showConfirmationModalState } from "store/atom/pageState";
+import { deleteDataState, isLoadingState, showConfirmationModalState } from "store/atom/pageState";
 
 const useDrugCategoryController = () => {
   const { useGetDrugCategory } = useDrugCategoryModel();
 
+  // GET - Get Clinic Drug Categories - Access : Admin,Administrator
   const useQueryGetDrugCategories = () => {
     const { data, isLoading } = useGetDrugCategory();
 
@@ -29,7 +30,7 @@ const useDrugCategoryController = () => {
             withAction: [
               {
                 type: "edit",
-                onClick: (id) => queryGetDrugCategoryDetail(id),
+                onClick: (id) => queryGetDrugCategoryUpdateForm(id),
               },
               {
                 type: "delete",
@@ -56,7 +57,8 @@ const useDrugCategoryController = () => {
     };
   };
 
-  const queryGetDrugCategoryDetail = async (id) => {
+  // GET - Drug Category Update Form Data - Access : Admin,Administrator
+  const queryGetDrugCategoryUpdateForm = async (id) => {
     setRecoil(isLoadingState, true);
 
     const formData = { ...addKategoriForm };
@@ -64,33 +66,29 @@ const useDrugCategoryController = () => {
     await getDrugCategoryDetail(id)
       .then((response) => {
         Object.assign(formData, {
-          type: formData.type + "-edit",
           title: "Edit Kategori",
           defaultValues: {
             categoryName: response.data.category_name,
           },
           submitButton: {
-            type: "submit",
+            ...formData.submitButton,
             label: "Edit Kategori",
+            onClick: (data) => updateDrugCategoryMutation.mutate({ id, data }),
           },
         });
 
         setRecoil(showFormModalState, true);
         setRecoil(formModalDataState, formData);
-        setRecoil(editDataState, {
-          onApprove: (data) => updateDrugCategoryMutation.mutate({ id, data }),
-        });
       })
       .catch((error) => {
-        if (error.error.status === 404) {
-          showToast("failed", error.error.message);
-        }
+        showToast("failed", error.error.message);
       })
       .finally(() => {
         setRecoil(isLoadingState, false);
       });
   };
 
+  // POST - Add Clinic New Drug Category - Access : Admin,Administrator
   const addDrugCategoryMutation = useMutation(addDrugCategory, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
@@ -105,6 +103,10 @@ const useDrugCategoryController = () => {
     onError: (error) => {
       if (error.error.status === 422) {
         setRecoil(validationErrorState, error.error.message);
+      } else {
+        showToast("failed", error.error.message);
+        setRecoil(formModalDataState, null);
+        setRecoil(showFormModalState, false);
       }
     },
     onSettled: () => {
@@ -112,6 +114,7 @@ const useDrugCategoryController = () => {
     },
   });
 
+  // PUT - Update Clinic Drug Category Data - Access : Admin,Administrator
   const updateDrugCategoryMutation = useMutation(updateDrugCategory, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
@@ -121,14 +124,15 @@ const useDrugCategoryController = () => {
       showToast("success", response.message);
       setRecoil(formModalDataState, null);
       setRecoil(showFormModalState, false);
-      setRecoil(editDataState, null);
       queryClient.invalidateQueries({ queryKey: ["getDrugCategories"] });
     },
     onError: (error) => {
       if (error.error.status === 422) {
         setRecoil(validationErrorState, error.error.message);
-      } else if (error.error.status === 404) {
+      } else {
         showToast("failed", error.error.message);
+        setRecoil(formModalDataState, null);
+        setRecoil(showFormModalState, false);
       }
     },
     onSettled: () => {
@@ -136,6 +140,7 @@ const useDrugCategoryController = () => {
     },
   });
 
+  // DELETE - Delete Clinic Drug Category Data - Access : Admin,Administrator
   const deleteDrugCategoryMutation = useMutation(deleteDrugCategory, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
@@ -145,9 +150,7 @@ const useDrugCategoryController = () => {
       queryClient.invalidateQueries({ queryKey: ["getDrugCategories"] });
     },
     onError: (error) => {
-      if (error.error.status === 404) {
-        showToast("failed", error.error.message);
-      }
+      showToast("failed", error.error.message);
     },
     onSettled: () => {
       setRecoil(isLoadingState, false);

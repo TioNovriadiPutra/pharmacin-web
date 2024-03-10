@@ -6,7 +6,8 @@ import { useMutation } from "react-query";
 import { deleteDataState, isLoadingState, showConfirmationModalState } from "store/atom/pageState";
 import { setRecoil } from "recoil-nexus";
 import { queryClient } from "config/query";
-import { deleteAdministrator } from "services/user";
+import { deleteAdministrator, getAdministratorDetail, updateAdministrator } from "services/user";
+import { formModalDataState, showFormModalState, validationErrorState } from "store/atom/formState";
 
 const useUserController = () => {
   const { useGetUserProfile, useGetAdministrators } = useUserModel();
@@ -57,6 +58,7 @@ const useUserController = () => {
               withAction: [
                 {
                   type: "edit",
+                  onClick: (id) => queryGetAdministratorUpdateForm(id),
                 },
                 {
                   type: "delete",
@@ -86,6 +88,67 @@ const useUserController = () => {
       isLoading,
     };
   };
+
+  // GET - Get Administrator Update Form Data - Access : Admin
+  const queryGetAdministratorUpdateForm = async (id) => {
+    setRecoil(isLoadingState, true);
+
+    const formData = { ...addAdministratorForm };
+
+    await getAdministratorDetail(id)
+      .then((response) => {
+        Object.assign(formData, {
+          title: "Edit Administrator",
+          inputs: formData.inputs.filter((input) => input.name !== "password" && input.name !== "password_confirmation" && input.name !== "email"),
+          defaultValues: {
+            fullName: response.data.full_name,
+            gender: response.data.gender,
+            phone: response.data.phone,
+            address: response.data.address,
+          },
+          submitButton: {
+            ...formData.submitButton,
+            label: "Edit Akun",
+            onClick: (data) => updateAdministratorMutation.mutate({ id, data: { ...data, gender: data.gender ? data.gender.value : null } }),
+          },
+        });
+
+        setRecoil(formModalDataState, formData);
+        setRecoil(showFormModalState, true);
+      })
+      .catch((error) => {
+        showToast("failed", error.error.message);
+      })
+      .finally(() => {
+        setRecoil(isLoadingState, false);
+      });
+  };
+
+  // PUT - Update Administrator Account - Access : Admin
+  const updateAdministratorMutation = useMutation(updateAdministrator, {
+    onMutate: () => {
+      setRecoil(isLoadingState, true);
+      setRecoil(validationErrorState, null);
+    },
+    onSuccess: (response) => {
+      showToast("success", response.message);
+      setRecoil(formModalDataState, null);
+      setRecoil(showFormModalState, false);
+      queryClient.invalidateQueries({ queryKey: ["getAdministrators"] });
+    },
+    onError: (error) => {
+      if (error.error.status === 422) {
+        setRecoil(validationErrorState, error.error.message);
+      } else {
+        showToast("failed", error.error.message);
+        setRecoil(formModalDataState, null);
+        setRecoil(showFormModalState, false);
+      }
+    },
+    onSettled: () => {
+      setRecoil(isLoadingState, false);
+    },
+  });
 
   // DELETE - Delete Administrator Account - Access : Admin
   const deleteAdministratorMutation = useMutation(deleteAdministrator, {

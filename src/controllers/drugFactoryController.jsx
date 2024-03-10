@@ -8,24 +8,14 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { setRecoil } from "recoil-nexus";
 import { addDrugFactory, deleteDrugFactory } from "services/drugFactory";
-import {
-  formModalDataState,
-  showFormModalState,
-  validationErrorState,
-} from "store/atom/formState";
-import {
-  deleteDataState,
-  detailDataState,
-  isLoadingState,
-  showConfirmationModalState,
-  showDetailModalState,
-} from "store/atom/pageState";
+import { formModalDataState, showFormModalState, validationErrorState } from "store/atom/formState";
+import { deleteDataState, detailDataState, isLoadingState, showConfirmationModalState, showDetailModalState } from "store/atom/pageState";
 
 const useDrugFactoryController = () => {
-  const { useGetDrugFactories, useGetDrugFactoryDetail } =
-    useDrugFactoryModel();
+  const { useGetDrugFactories, useGetDrugFactoryDetail } = useDrugFactoryModel();
   const nav = useNavigate();
 
+  // GET - Get Clinic Drug Factory Partnerships - Access : Admin,Administrator
   const useQueryGetDrugFactories = () => {
     const { data, isLoading } = useGetDrugFactories();
 
@@ -36,11 +26,7 @@ const useDrugFactoryController = () => {
     if (!isLoading) {
       Object.assign(tableData, {
         table: data.data.map((item) => {
-          const data = [
-            item.factory_name,
-            item.factory_email,
-            item.factory_phone,
-          ];
+          const data = [item.factory_name, item.factory_email, item.factory_phone];
 
           return {
             id: item.id,
@@ -77,19 +63,12 @@ const useDrugFactoryController = () => {
     };
   };
 
+  // GET - Get Clinic Drug Factory Detail Data - Access : Admin,Administrator
   const useQueryGetDrugFactoryDetail = (id) => {
     const { data, isLoading } = useGetDrugFactoryDetail(id);
 
     const tableData = {
-      header: [
-        "Nama Obat",
-        "Nama Generik",
-        "Kategori",
-        "Harga Beli",
-        "Harga Jual",
-        "Komposisi",
-        "Stock",
-      ],
+      header: ["Nama Obat", "Nama Generik", "Kategori", "Harga Beli", "Harga Jual", "Komposisi", "Stock"],
       backDest: "/pabrikan",
       onDetailModal: (data) => {
         setRecoil(showDetailModalState, true);
@@ -155,6 +134,7 @@ const useDrugFactoryController = () => {
     };
   };
 
+  // POST - Add Clinic Drug Factory Partnerships - Access : Admin,Administrator
   const addDrugFactoryMutation = useMutation(addDrugFactory, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
@@ -176,6 +156,7 @@ const useDrugFactoryController = () => {
     },
   });
 
+  // DELETE - Delete Clinic Drug Factory Partnership - Access : Admin,Administrator
   const deleteDrugFactoryMutation = useMutation(deleteDrugFactory, {
     onMutate: () => {
       setRecoil(isLoadingState, true);

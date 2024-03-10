@@ -4,15 +4,18 @@ import useStockModel from "models/stockModel";
 const useStockController = () => {
   const { useGetStocks } = useStockModel();
 
+  // GET - Get Clinic Drug Stocks Data - Access : Admin,Administrator
   const useQueryGetStocks = () => {
     const { data, isLoading } = useGetStocks();
 
     const tableData = [
       {
         header: ["Nama Obat", "Nama Pabrik", "Kategori", "Harga Beli", "Harga Jual", "Stock"],
+        table: [],
       },
       {
         header: ["Nama Obat", "Nama Pabrik", "Batch ID", "Kadaluarsa", "Stock Beli", "Terjual", "Stock"],
+        table: [],
       },
     ];
 

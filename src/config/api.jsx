@@ -15,11 +15,13 @@ const USER_PREFIX = BASE_URL + "user";
 const UNIT_PREFIX = BASE_URL + "unit";
 const OCCUPATION_PREFIX = BASE_URL + "occupation";
 const CLINIC_PREFIX = BASE_URL + "clinic";
+const SPECIALITY_PREFIX = BASE_URL + "speciality";
 
 export const ENDPOINT = {
   login: AUTH_PREFIX + "/login/desktop",
   registerAdmin: REGIS_PREFIX + "/admin",
   registerAdministrator: REGIS_PREFIX + "/administrator",
+  registerDoctor: REGIS_PREFIX + "/doctor",
   logout: AUTH_PREFIX + "/logout",
   getFactories: FACTORY_PREFIX,
   addFactory: FACTORY_PREFIX + "/partnership",
@@ -36,4 +38,5 @@ export const ENDPOINT = {
   getUnits: UNIT_PREFIX,
   getOccupations: OCCUPATION_PREFIX,
   getClinicDetail: CLINIC_PREFIX,
+  getSpecialities: SPECIALITY_PREFIX,
 };

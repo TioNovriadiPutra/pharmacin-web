@@ -14,6 +14,7 @@ const usePatientController = () => {
   const { useGetPatients } = usePatientModel();
   const { cancelQueueMutation } = useQueueController();
 
+  // GET - Get Registered Clinic Patients - Access : Admin,Administrator
   const useQueryGetPatients = () => {
     const results = useGetPatients();
 
@@ -132,6 +133,7 @@ const usePatientController = () => {
     };
   };
 
+  // GET - Get Registered Clinic Doctor - Access : Admin,Administrator
   const queryGetDoctorsDropdown = async (data) => {
     setRecoil(isLoadingState, true);
 
@@ -140,8 +142,8 @@ const usePatientController = () => {
         Object.assign(pickDoctorForm.inputs[0], {
           items: response.data.map((item) => {
             return {
-              label: item.doctor,
-              value: item.id,
+              label: item.full_name,
+              value: item.doctor_id,
             };
           }),
         });
@@ -154,6 +156,7 @@ const usePatientController = () => {
       });
   };
 
+  // POST - Register Patient to Queue - Access : Administrator
   const addPatientQueueMutation = useMutation(addPatientQueue, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
@@ -166,7 +169,7 @@ const usePatientController = () => {
     onError: (error) => {
       if (error.error.status === 422) {
         showToast("failed", error.error.message[0].message);
-      } else if (error.error.status === 404 || error.error.status === 403) {
+      } else {
         showToast("failed", error.error.message);
       }
     },
@@ -177,6 +180,7 @@ const usePatientController = () => {
     },
   });
 
+  // POST - Register New Patient - Access : Administrator
   const addPatientMutation = useMutation(addPatient, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
@@ -191,8 +195,10 @@ const usePatientController = () => {
     onError: (error) => {
       if (error.error.status === 422) {
         setRecoil(validationErrorState, error.error.message);
-      } else if (error.error.status === 403) {
+      } else {
         showToast("failed", error.error.message);
+        setRecoil(formModalDataState, null);
+        setRecoil(showFormModalState, false);
       }
     },
     onSettled: () => {

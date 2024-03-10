@@ -11,43 +11,47 @@ import { isLoadingState } from "store/atom/pageState";
 const useClinicController = () => {
   const { useGetClinicDetail } = useClinicModel();
 
-  // GET - Get Clinic Profile - Access : Admin, Administrator
+  // GET - Get Clinic Profile - Access : Admin,Administrator
   const useQueryGetClinicDetail = () => {
-    const { data, isLoading } = useGetClinicDetail();
+    const { data, isLoading, error } = useGetClinicDetail();
 
     const detailData = {
       inputs: [],
     };
 
     if (!isLoading) {
-      Object.assign(detailData, {
-        inputs: [
-          {
-            title: "Nama Klinik",
-            value: data.data.clinic_name,
-          },
-          {
-            title: "Alamat",
-            value: data.data.address || "-",
-          },
-          {
-            title: "Telepon",
-            value: data.data.clinic_phone,
-          },
-        ],
-      });
+      if (error) {
+        showToast("failed", error.response.data.error.message);
+      } else {
+        Object.assign(detailData, {
+          inputs: [
+            {
+              title: "Nama Klinik",
+              value: data.data.clinic_name,
+            },
+            {
+              title: "Alamat",
+              value: data.data.address || "-",
+            },
+            {
+              title: "Telepon",
+              value: data.data.clinic_phone,
+            },
+          ],
+        });
 
-      Object.assign(editKlinikForm, {
-        defaultValues: {
-          clinicName: data.data.clinic_name,
-          address: data.data.address,
-          clinicPhone: data.data.clinic_phone,
-        },
-        submitButton: {
-          ...editKlinikForm.submitButton,
-          onClick: (data) => updateClinicMutation.mutate(data),
-        },
-      });
+        Object.assign(editKlinikForm, {
+          defaultValues: {
+            clinicName: data.data.clinic_name,
+            address: data.data.address,
+            clinicPhone: data.data.clinic_phone,
+          },
+          submitButton: {
+            ...editKlinikForm.submitButton,
+            onClick: (data) => updateClinicMutation.mutate(data),
+          },
+        });
+      }
     }
 
     return {
@@ -73,6 +77,8 @@ const useClinicController = () => {
         setRecoil(validationErrorState, error.error.message);
       } else {
         showToast("failed", error.error.message);
+        setRecoil(formModalDataState, null);
+        setRecoil(showFormModalState, false);
       }
     },
     onSettled: () => {

@@ -3,7 +3,7 @@ import { showToast } from "helpers/toast";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { setRecoil } from "recoil-nexus";
-import { login, logout, register, registerAdministrator } from "services/auth";
+import { login, logout, register, registerAdministrator, registerDoctor } from "services/auth";
 import { paymentStatusState, roleState, tokenState } from "store/atom/authState";
 import { formModalDataState, showFormModalState, validationErrorState } from "store/atom/formState";
 import { drawerStatusState, drawerSubIndexState, isLoadingState } from "store/atom/pageState";
@@ -73,6 +73,36 @@ const useAuthController = () => {
     onError: (error) => {
       if (error.error.status === 422) {
         setRecoil(validationErrorState, error.error.message);
+      } else {
+        showToast("failed", error.error.message);
+        setRecoil(formModalDataState, null);
+        setRecoil(showFormModalState, false);
+      }
+    },
+    onSettled: () => {
+      setRecoil(isLoadingState, false);
+    },
+  });
+
+  // POST - Register Doctor Employee - Access : Admin
+  const registerDoctorMutation = useMutation(registerDoctor, {
+    onMutate: () => {
+      setRecoil(isLoadingState, true);
+      setRecoil(validationErrorState, null);
+    },
+    onSuccess: (response) => {
+      showToast("success", response.message);
+      setRecoil(formModalDataState, null);
+      setRecoil(showFormModalState, false);
+      queryClient.invalidateQueries({ queryKey: ["getDoctors"] });
+    },
+    onError: (error) => {
+      if (error.error.status === 422) {
+        setRecoil(validationErrorState, error.error.message);
+      } else {
+        showToast("failed", error.error.message);
+        setRecoil(formModalDataState, null);
+        setRecoil(showFormModalState, false);
       }
     },
     onSettled: () => {
@@ -104,6 +134,7 @@ const useAuthController = () => {
     },
   });
 
+  // LOCAL - Check Is User Already Login - Access : All
   const useIsLoggedIn = () => {
     setRecoil(isLoadingState, true);
 
@@ -131,6 +162,12 @@ const useAuthController = () => {
       registerAdministratorMutation.mutate({
         ...data,
         gender: data.gender ? data.gender.value : null,
+      }),
+    registerDoctor: (data) =>
+      registerDoctorMutation.mutate({
+        ...data,
+        gender: data.gender ? data.gender.value : null,
+        specialityId: data.specialityId ? data.specialityId.value : null,
       }),
     logout: () => logoutMutation.mutate(),
     useIsLoggedIn,

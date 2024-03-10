@@ -6,6 +6,7 @@ import { cancelQueue } from "services/queue";
 import { deleteDataState, isLoadingState, showConfirmationModalState } from "store/atom/pageState";
 
 const useQueueController = () => {
+  // DELETE - Cancel Patient Queue - Access : Administrator
   const cancelQueueMutation = useMutation(cancelQueue, {
     onMutate: () => {
       setRecoil(isLoadingState, true);

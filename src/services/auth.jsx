@@ -49,6 +49,22 @@ export const registerAdministrator = async (data) => {
   }
 };
 
+export const registerDoctor = async (data) => {
+  try {
+    const response = await axios.post(ENDPOINT.registerDoctor, data, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getRecoil(tokenState)}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
 export const logout = async () => {
   try {
     const response = await axios.get(ENDPOINT.logout, {

@@ -15,11 +15,6 @@ const deleteDataState = atom({
   default: null,
 });
 
-const editDataState = atom({
-  key: "editDataState",
-  default: null,
-});
-
 const detailDataState = atom({
   key: "detailDataState",
   default: null,
@@ -58,7 +53,6 @@ const pickDoctorDataState = atom({
 export {
   isLoadingState,
   showConfirmationModalState,
-  editDataState,
   detailDataState,
   showDetailModalState,
   drawerSubIndexState,

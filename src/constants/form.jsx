@@ -112,7 +112,6 @@ const registerForm = {
 };
 
 const addPabrikForm = {
-  type: "pabrikan",
   title: "Tambah Pabrik",
   inputs: [
     {
@@ -146,7 +145,6 @@ const addPabrikForm = {
 };
 
 const addKategoriForm = {
-  type: "kategori",
   title: "Tambah Kategori",
   inputs: [
     {
@@ -166,7 +164,6 @@ const addKategoriForm = {
 };
 
 const addObatForm = {
-  type: "obat",
   title: "Tambah Obat",
   inputs: [
     {
@@ -230,7 +227,8 @@ const addObatForm = {
   defaultValues: {
     drug: "",
     drugGenericName: "",
-    dose: "",
+    unitId: null,
+    composition: "",
     categoryId: null,
     shelve: "",
     factoryId: null,
@@ -338,7 +336,6 @@ const addPembelianForm = {
 };
 
 const pickDoctorForm = {
-  type: "pickDoctor",
   inputs: [
     {
       type: "dropdown",
@@ -353,7 +350,6 @@ const pickDoctorForm = {
 };
 
 const addPatientForm = {
-  type: "addPatient",
   title: "Tambah Pasien",
   inputs: [
     {
@@ -440,7 +436,6 @@ const addPatientForm = {
 };
 
 const editKlinikForm = {
-  type: "editKlinik",
   title: "Edit Klinik",
   inputs: [
     {
@@ -474,7 +469,6 @@ const editKlinikForm = {
 };
 
 const addAdministratorForm = {
-  type: "addAdministrator",
   title: "Tambah Administrator",
   inputs: [
     {
@@ -545,4 +539,83 @@ const addAdministratorForm = {
   },
 };
 
-export { loginForm, registerForm, addPabrikForm, addKategoriForm, addObatForm, addPembelianForm, pickDoctorForm, addPatientForm, editKlinikForm, addAdministratorForm };
+const addDoctorForm = {
+  title: "Tambah Administrator",
+  inputs: [
+    {
+      type: "text",
+      name: "email",
+      placeholder: "Email",
+      outside: true,
+    },
+    {
+      type: "password",
+      name: "password",
+      placeholder: "Password",
+      outside: true,
+    },
+    {
+      type: "password",
+      name: "password_confirmation",
+      placeholder: "Konfirmasi Password",
+      outside: true,
+    },
+    {
+      type: "text",
+      name: "fullName",
+      placeholder: "Nama Dokter",
+      outside: true,
+    },
+    {
+      type: "dropdown",
+      name: "gender",
+      placeholder: "Jenis Kelamin",
+      outside: true,
+      items: [
+        {
+          label: "Laki-laki",
+          value: "male",
+        },
+        {
+          label: "Perempuan",
+          value: "female",
+        },
+      ],
+    },
+    {
+      type: "text",
+      name: "phone",
+      placeholder: "Handphone",
+      outside: true,
+    },
+    {
+      type: "dropdown",
+      name: "specialityId",
+      placeholder: "Spesialisasi",
+      outside: true,
+      items: [],
+    },
+    {
+      type: "text",
+      name: "address",
+      placeholder: "Alamat",
+      outside: true,
+    },
+  ],
+  defaultValues: {
+    email: "",
+    password: "",
+    password_confirmation: "",
+    fullName: "",
+    gender: null,
+    phone: "",
+    specialityId: null,
+    address: "",
+  },
+  submitButton: {
+    type: "submit",
+    label: "Tambah Akun",
+  },
+};
+
+export { loginForm, registerForm, addPabrikForm, addKategoriForm, addObatForm, addPembelianForm, pickDoctorForm, addPatientForm, editKlinikForm, addAdministratorForm, addDoctorForm };

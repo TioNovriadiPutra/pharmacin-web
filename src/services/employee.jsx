@@ -3,12 +3,11 @@ import { ENDPOINT } from "config/api";
 import { getRecoil } from "recoil-nexus";
 import { tokenState } from "store/atom/authState";
 
-export const login = async (data) => {
+export const getEmployees = async () => {
   try {
-    const response = await axios.post(ENDPOINT.login, data, {
+    const response = await axios.get(ENDPOINT.getEmployees, {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${getRecoil(tokenState)}`,
       },
     });
 
@@ -18,12 +17,11 @@ export const login = async (data) => {
   }
 };
 
-export const register = async (data) => {
+export const getEmployeeDetail = async (id) => {
   try {
-    const response = await axios.post(ENDPOINT.registerAdmin, data, {
+    const response = await axios.get(`${ENDPOINT.getEmployees}/${id}`, {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${getRecoil(tokenState)}`,
       },
     });
 
@@ -33,9 +31,9 @@ export const register = async (data) => {
   }
 };
 
-export const registerAdministrator = async (data) => {
+export const addEmployee = async (data) => {
   try {
-    const response = await axios.post(ENDPOINT.registerAdministrator, data, {
+    const response = await axios.post(ENDPOINT.registerEmployee, data, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -49,9 +47,9 @@ export const registerAdministrator = async (data) => {
   }
 };
 
-export const registerDoctor = async (data) => {
+export const updateEmployee = async (data) => {
   try {
-    const response = await axios.post(ENDPOINT.registerDoctor, data, {
+    const response = await axios.put(`${ENDPOINT.getEmployees}/${data.id}`, data.data, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -65,25 +63,9 @@ export const registerDoctor = async (data) => {
   }
 };
 
-export const registerDoctorAssistant = async (data) => {
+export const deleteEmployee = async (id) => {
   try {
-    const response = await axios.post(ENDPOINT.registerDoctorAssistant, data, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getRecoil(tokenState)}`,
-      },
-    });
-
-    return response.data;
-  } catch (error) {
-    throw error.response.data;
-  }
-};
-
-export const logout = async () => {
-  try {
-    const response = await axios.get(ENDPOINT.logout, {
+    const response = await axios.delete(`${ENDPOINT.getEmployees}/${id}`, {
       headers: {
         Authorization: `Bearer ${getRecoil(tokenState)}`,
       },

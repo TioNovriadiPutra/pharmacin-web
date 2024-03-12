@@ -618,4 +618,168 @@ const addDoctorForm = {
   },
 };
 
-export { loginForm, registerForm, addPabrikForm, addKategoriForm, addObatForm, addPembelianForm, pickDoctorForm, addPatientForm, editKlinikForm, addAdministratorForm, addDoctorForm };
+const addEmployeeForm = {
+  title: "Tambah Karyawan",
+  inputs: [
+    {
+      type: "text",
+      name: "fullName",
+      placeholder: "Nama Karyawan",
+      outside: true,
+    },
+    {
+      type: "dropdown",
+      name: "gender",
+      placeholder: "Jenis Kelamin",
+      outside: true,
+      items: [
+        {
+          label: "Laki-laki",
+          value: "male",
+        },
+        {
+          label: "Perempuan",
+          value: "female",
+        },
+      ],
+    },
+    {
+      type: "text",
+      name: "phone",
+      placeholder: "Handphone",
+      outside: true,
+    },
+    {
+      type: "text",
+      name: "address",
+      placeholder: "Alamat",
+      outside: true,
+    },
+    {
+      type: "text",
+      name: "email",
+      placeholder: "Email",
+      outside: true,
+    },
+    {
+      type: "password",
+      name: "password",
+      placeholder: "Password",
+      outside: true,
+    },
+    {
+      type: "password",
+      name: "password_confirmation",
+      placeholder: "Konfirmasi Password",
+      outside: true,
+    },
+  ],
+  defaultValues: {
+    fullName: "",
+    gender: null,
+    phone: "",
+    address: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+  },
+  submitButton: {
+    type: "submit",
+    label: "Tambah Akun",
+  },
+};
+
+const addDoctorAssistantForm = {
+  title: "Tambah Asisten",
+  inputs: [
+    {
+      type: "text",
+      name: "fullName",
+      placeholder: "Nama Karyawan",
+      outside: true,
+    },
+    {
+      type: "dropdown",
+      name: "gender",
+      placeholder: "Jenis Kelamin",
+      outside: true,
+      items: [
+        {
+          label: "Laki-laki",
+          value: "male",
+        },
+        {
+          label: "Perempuan",
+          value: "female",
+        },
+      ],
+    },
+    {
+      type: "text",
+      name: "phone",
+      placeholder: "Handphone",
+      outside: true,
+    },
+    {
+      type: "text",
+      name: "address",
+      placeholder: "Alamat",
+      outside: true,
+    },
+    {
+      type: "dropdown",
+      name: "doctorId",
+      placeholder: "Dokter",
+      outside: true,
+      items: [],
+    },
+    {
+      type: "text",
+      name: "email",
+      placeholder: "Email",
+      outside: true,
+    },
+    {
+      type: "password",
+      name: "password",
+      placeholder: "Password",
+      outside: true,
+    },
+    {
+      type: "password",
+      name: "password_confirmation",
+      placeholder: "Konfirmasi Password",
+      outside: true,
+    },
+  ],
+  defaultValues: {
+    fullName: "",
+    gender: null,
+    phone: "",
+    address: "",
+    doctorId: null,
+    email: "",
+    password: "",
+    password_confirmation: "",
+  },
+  submitButton: {
+    type: "submit",
+    label: "Tambah Akun",
+  },
+};
+
+export {
+  loginForm,
+  registerForm,
+  addPabrikForm,
+  addKategoriForm,
+  addObatForm,
+  addPembelianForm,
+  pickDoctorForm,
+  addPatientForm,
+  editKlinikForm,
+  addAdministratorForm,
+  addDoctorForm,
+  addEmployeeForm,
+  addDoctorAssistantForm,
+};

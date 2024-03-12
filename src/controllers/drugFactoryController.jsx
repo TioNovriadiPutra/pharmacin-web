@@ -149,6 +149,10 @@ const useDrugFactoryController = () => {
     onError: (error) => {
       if (error.error.status === 422) {
         setRecoil(validationErrorState, error.error.message);
+      } else {
+        showToast("failed", error.error.message);
+        setRecoil(formModalDataState, null);
+        setRecoil(showFormModalState, false);
       }
     },
     onSettled: () => {
@@ -166,9 +170,7 @@ const useDrugFactoryController = () => {
       queryClient.invalidateQueries({ queryKey: ["getDrugFactories"] });
     },
     onError: (error) => {
-      if (error.error.status === 404) {
-        showToast("failed", error.error.message);
-      }
+      showToast("failed", error.error.message);
     },
     onSettled: () => {
       setRecoil(isLoadingState, false);

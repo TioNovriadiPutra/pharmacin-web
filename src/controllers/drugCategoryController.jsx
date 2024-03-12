@@ -30,7 +30,7 @@ const useDrugCategoryController = () => {
             withAction: [
               {
                 type: "edit",
-                onClick: (id) => queryGetDrugCategoryUpdateForm(id),
+                onClick: (id) => getDrugCategoryUpdateForm.mutate(id),
               },
               {
                 type: "delete",
@@ -58,35 +58,35 @@ const useDrugCategoryController = () => {
   };
 
   // GET - Drug Category Update Form Data - Access : Admin,Administrator
-  const queryGetDrugCategoryUpdateForm = async (id) => {
-    setRecoil(isLoadingState, true);
+  const getDrugCategoryUpdateForm = useMutation(getDrugCategoryDetail, {
+    onMutate: () => {
+      setRecoil(isLoadingState, true);
+    },
+    onSuccess: (response, id) => {
+      const formData = { ...addKategoriForm };
 
-    const formData = { ...addKategoriForm };
-
-    await getDrugCategoryDetail(id)
-      .then((response) => {
-        Object.assign(formData, {
-          title: "Edit Kategori",
-          defaultValues: {
-            categoryName: response.data.category_name,
-          },
-          submitButton: {
-            ...formData.submitButton,
-            label: "Edit Kategori",
-            onClick: (data) => updateDrugCategoryMutation.mutate({ id, data }),
-          },
-        });
-
-        setRecoil(showFormModalState, true);
-        setRecoil(formModalDataState, formData);
-      })
-      .catch((error) => {
-        showToast("failed", error.error.message);
-      })
-      .finally(() => {
-        setRecoil(isLoadingState, false);
+      Object.assign(formData, {
+        title: "Edit Kategori",
+        defaultValues: {
+          categoryName: response.data.category_name,
+        },
+        submitButton: {
+          ...formData.submitButton,
+          label: "Edit Kategori",
+          onClick: (data) => updateDrugCategoryMutation.mutate({ id, data }),
+        },
       });
-  };
+
+      setRecoil(showFormModalState, true);
+      setRecoil(formModalDataState, formData);
+    },
+    onError: (error) => {
+      showToast("failed", error.error.message);
+    },
+    onSettled: () => {
+      setRecoil(isLoadingState, false);
+    },
+  });
 
   // POST - Add Clinic New Drug Category - Access : Admin,Administrator
   const addDrugCategoryMutation = useMutation(addDrugCategory, {

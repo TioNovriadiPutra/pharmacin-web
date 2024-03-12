@@ -35,7 +35,7 @@ const useDoctorController = () => {
             withAction: [
               {
                 type: "edit",
-                onClick: (id) => queryGetDoctorUpdateForm(id),
+                onClick: (id) => getDoctorUpdateFormMutation.mutate(id),
               },
               {
                 type: "delete",
@@ -80,48 +80,48 @@ const useDoctorController = () => {
   };
 
   // GET - Get Doctor Update Form Data - Access : Admin
-  const queryGetDoctorUpdateForm = async (id) => {
-    setRecoil(isLoadingState, true);
+  const getDoctorUpdateFormMutation = useMutation(getDoctorDetail, {
+    onMutate: () => {
+      setRecoil(isLoadingState, true);
+    },
+    onSuccess: (response, id) => {
+      const formData = { ...addDoctorForm };
 
-    const formData = { ...addDoctorForm };
-
-    await getDoctorDetail(id)
-      .then((response) => {
-        Object.assign(formData, {
-          title: "Edit Dokter",
-          inputs: formData.inputs.filter((input) => input.name !== "email" && input.name !== "password" && input.name !== "password_confirmation"),
-          defaultValues: {
-            fullName: response.data.full_name,
-            gender: response.data.gender,
-            phone: response.data.phone,
-            specialityId: response.data.speciality,
-            address: response.data.address,
-          },
-          submitButton: {
-            ...formData.submitButton,
-            label: "Edit Akun",
-            onClick: (data) =>
-              updateDoctorMutation.mutate({
-                id,
-                data: {
-                  ...data,
-                  gender: data.gender ? data.gender.value : null,
-                  specialityId: data.specialityId ? data.specialityId.value : null,
-                },
-              }),
-          },
-        });
-
-        setRecoil(formModalDataState, formData);
-        setRecoil(showFormModalState, true);
-      })
-      .catch((error) => {
-        showToast("failed", error.error.message);
-      })
-      .finally(() => {
-        setRecoil(isLoadingState, false);
+      Object.assign(formData, {
+        title: "Edit Dokter",
+        inputs: formData.inputs.filter((input) => input.name !== "email" && input.name !== "password" && input.name !== "password_confirmation"),
+        defaultValues: {
+          fullName: response.data.full_name,
+          gender: response.data.gender,
+          phone: response.data.phone,
+          specialityId: response.data.speciality,
+          address: response.data.address,
+        },
+        submitButton: {
+          ...formData.submitButton,
+          label: "Edit Akun",
+          onClick: (data) =>
+            updateDoctorMutation.mutate({
+              id,
+              data: {
+                ...data,
+                gender: data.gender ? data.gender.value : null,
+                specialityId: data.specialityId ? data.specialityId.value : null,
+              },
+            }),
+        },
       });
-  };
+
+      setRecoil(formModalDataState, formData);
+      setRecoil(showFormModalState, true);
+    },
+    onError: (error) => {
+      showToast("failed", error.error.message);
+    },
+    onSettled: () => {
+      setRecoil(isLoadingState, false);
+    },
+  });
 
   // PUT - Update Doctor Account Data - Access : Admin
   const updateDoctorMutation = useMutation(updateDoctor, {

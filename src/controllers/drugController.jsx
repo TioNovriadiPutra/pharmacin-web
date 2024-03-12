@@ -33,11 +33,11 @@ const useDrugController = () => {
             withAction: [
               {
                 type: "info",
-                onClick: (id) => queryGetDrugDetail(id),
+                onClick: (id) => getDrugDetailMutation.mutate(id),
               },
               {
                 type: "edit",
-                onClick: (id) => queryGetDrugUpdateForm(id),
+                onClick: (id) => getGetDrugUpdateFormMutation.mutate(id),
               },
               {
                 type: "delete",
@@ -106,123 +106,123 @@ const useDrugController = () => {
   };
 
   // GET - Get Drug Update Form Data - Access : Admin,Administrator
-  const queryGetDrugUpdateForm = async (id) => {
-    setRecoil(isLoadingState, true);
+  const getGetDrugUpdateFormMutation = useMutation(getDrugDetail, {
+    onMutate: () => {
+      setRecoil(isLoadingState, true);
+    },
+    onSuccess: (response, id) => {
+      const formData = { ...addObatForm };
 
-    const formData = { ...addObatForm };
-
-    await getDrugDetail(id)
-      .then((response) => {
-        Object.assign(formData, {
-          title: "Edit Obat",
-          defaultValues: {
-            drug: response.data.drug,
-            drugGenericName: response.data.drug_generic_name,
-            unitId: response.data.unit,
-            composition: response.data.composition,
-            categoryId: response.data.drug_category,
-            shelve: response.data.shelve,
-            factoryId: response.data.drug_factory,
-            purchasePrice: response.data.purchase_price,
-            sellingPrice: response.data.selling_price,
-          },
-          submitButton: {
-            ...formData.submitButton,
-            label: "Edit Obat",
-            onClick: (data) =>
-              updateDrugMutation.mutate({
-                id,
-                data: {
-                  ...data,
-                  categoryId: data.categoryId ? data.categoryId.value : null,
-                  factoryId: data.factoryId ? data.factoryId.value : null,
-                  unitId: data.unitId ? data.unitId.value : null,
-                },
-              }),
-          },
-        });
-
-        setRecoil(showFormModalState, true);
-        setRecoil(formModalDataState, formData);
-      })
-      .catch((error) => {
-        showToast("failed", error.error.message);
-      })
-      .finally(() => {
-        setRecoil(isLoadingState, false);
+      Object.assign(formData, {
+        title: "Edit Obat",
+        defaultValues: {
+          drug: response.data.drug,
+          drugGenericName: response.data.drug_generic_name,
+          unitId: response.data.unit,
+          composition: response.data.composition,
+          categoryId: response.data.drug_category,
+          shelve: response.data.shelve,
+          factoryId: response.data.drug_factory,
+          purchasePrice: response.data.purchase_price,
+          sellingPrice: response.data.selling_price,
+        },
+        submitButton: {
+          ...formData.submitButton,
+          label: "Edit Obat",
+          onClick: (data) =>
+            updateDrugMutation.mutate({
+              id,
+              data: {
+                ...data,
+                categoryId: data.categoryId ? data.categoryId.value : null,
+                factoryId: data.factoryId ? data.factoryId.value : null,
+                unitId: data.unitId ? data.unitId.value : null,
+              },
+            }),
+        },
       });
-  };
+
+      setRecoil(showFormModalState, true);
+      setRecoil(formModalDataState, formData);
+    },
+    onError: (error) => {
+      showToast("failed", error.error.message);
+    },
+    onSettled: () => {
+      setRecoil(isLoadingState, false);
+    },
+  });
 
   // GET - Get Clinic Drug Detail - Access : Admin,Administrator
-  const queryGetDrugDetail = async (id) => {
-    setRecoil(isLoadingState, true);
+  const getDrugDetailMutation = useMutation(getDrugDetail, {
+    onMutate: () => {
+      setRecoil(isLoadingState, true);
+    },
+    onSuccess: (response) => {
+      const detailData = {
+        title: "Informasi Obat",
+        inputs: [
+          {
+            title: "ID",
+            value: response.data.drug_number,
+          },
+          {
+            title: "Nama Obat",
+            value: response.data.drug,
+          },
+          {
+            title: "Nama Generik",
+            value: response.data.drug_generic_name || "-",
+          },
+          {
+            title: "Satuan",
+            value: response.data.unit_name,
+          },
+          {
+            title: "Komposisi",
+            value: response.data.composition,
+          },
+          {
+            title: "Kategori",
+            value: response.data.drug_category.label,
+          },
+          {
+            title: "Rak",
+            value: response.data.shelve || "-",
+          },
+          {
+            title: "Pabrikan",
+            value: response.data.drug_factory.label,
+          },
+          {
+            title: "Harga Beli Pabrikan",
+            value: formatCurrency(response.data.purchase_price),
+          },
+          {
+            title: "Harga Jual",
+            value: formatCurrency(response.data.selling_price),
+          },
+        ],
+        footer: [
+          {
+            label: "Stock",
+            value: response.data.total_stock,
+            color: "bg-light-primary",
+            textColor: "text-primary",
+          },
+        ],
+      };
 
-    await getDrugDetail(id)
-      .then((response) => {
-        const detailData = {
-          title: "Informasi Obat",
-          inputs: [
-            {
-              title: "ID",
-              value: response.data.drug_number,
-            },
-            {
-              title: "Nama Obat",
-              value: response.data.drug,
-            },
-            {
-              title: "Nama Generik",
-              value: response.data.drug_generic_name || "-",
-            },
-            {
-              title: "Satuan",
-              value: response.data.unit_name,
-            },
-            {
-              title: "Komposisi",
-              value: response.data.composition,
-            },
-            {
-              title: "Kategori",
-              value: response.data.drug_category.label,
-            },
-            {
-              title: "Rak",
-              value: response.data.shelve || "-",
-            },
-            {
-              title: "Pabrikan",
-              value: response.data.drug_factory.label,
-            },
-            {
-              title: "Harga Beli Pabrikan",
-              value: formatCurrency(response.data.purchase_price),
-            },
-            {
-              title: "Harga Jual",
-              value: formatCurrency(response.data.selling_price),
-            },
-          ],
-          footer: [
-            {
-              label: "Stock",
-              value: response.data.total_stock,
-              color: "bg-light-primary",
-              textColor: "text-primary",
-            },
-          ],
-        };
-
-        setRecoil(showDetailModalState, true);
-        setRecoil(detailDataState, detailData);
-      })
-      .catch((error) => {
-        showToast("failed", error.error.message);
-      })
-      .finally(() => {
-        setRecoil(isLoadingState, false);
-      });
-  };
+      setRecoil(showDetailModalState, true);
+      setRecoil(detailDataState, detailData);
+    },
+    onError: (error) => {
+      showToast("failed", error.error.message);
+    },
+    onSettled: () => {
+      setRecoil(isLoadingState, false);
+    },
+  });
 
   // POST - Add Clinic New Drug Data - Access : Admin,Administrator
   const addDrugMutation = useMutation(addDrug, {

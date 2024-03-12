@@ -30,7 +30,7 @@ const AppRoute = ({ role }) => {
         {role === 2 ? (
           <>
             <Route path="dokter" element={<PemeriksaanPasien />} />
-            <Route path="dokter/perawatan" element={<Perawatan />} />
+            <Route path="dokter/perawatan/:id" element={<Perawatan />} />
           </>
         ) : (
           <>

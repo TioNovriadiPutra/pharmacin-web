@@ -16,3 +16,17 @@ export const cancelQueue = async (id) => {
     throw error.response.data;
   }
 };
+
+export const getDoctorConsultingQueue = async () => {
+  try {
+    const response = await axios.get(ENDPOINT.getDoctorConsultingQueue, {
+      headers: {
+        Authorization: `Bearer ${getRecoil(tokenState)}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};

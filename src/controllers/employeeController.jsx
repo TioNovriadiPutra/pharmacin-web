@@ -1,43 +1,19 @@
-import { showToast } from "helpers/toast";
-import useUserModel from "models/userModel";
-import useAuthController from "./authController";
-import { addAdministratorForm } from "constants/form";
-import { useMutation } from "react-query";
-import { deleteDataState, isLoadingState, showConfirmationModalState } from "store/atom/pageState";
-import { setRecoil } from "recoil-nexus";
 import { queryClient } from "config/query";
-import { deleteAdministrator, getAdministratorDetail, updateAdministrator } from "services/user";
+import { addEmployeeForm } from "constants/form";
+import { showToast } from "helpers/toast";
+import useEmployeeModel from "models/employeeModel";
+import { useMutation } from "react-query";
+import { setRecoil } from "recoil-nexus";
+import { addEmployee, deleteEmployee, getEmployeeDetail, updateEmployee } from "services/employee";
 import { formModalDataState, showFormModalState, validationErrorState } from "store/atom/formState";
+import { deleteDataState, isLoadingState, showConfirmationModalState } from "store/atom/pageState";
 
-const useUserController = () => {
-  const { useGetUserProfile, useGetAdministrators } = useUserModel();
-  const { registerAdministrator } = useAuthController();
+const useEmployeeController = () => {
+  const { useGetEmployees } = useEmployeeModel();
 
-  // GET - Get User Profile - Access : All
-  const useQueryGetUserProfile = () => {
-    const { data, isLoading } = useGetUserProfile();
-
-    const profileData = {
-      name: "",
-      role: "",
-    };
-
-    if (!isLoading) {
-      Object.assign(profileData, {
-        name: data.data.full_name,
-        role: data.data.role_name,
-      });
-    }
-
-    return {
-      profileData,
-      isLoading,
-    };
-  };
-
-  // GET - Get Administrators Account - Access : Admin
-  const useQueryGetAdministrators = () => {
-    const { data, isLoading, error, isError } = useGetAdministrators();
+  // GET - Get Clinic Employees Account - Access : Admin
+  const useQueryGetEmployees = () => {
+    const { data, isLoading, isError, error } = useGetEmployees();
 
     const tableData = {
       header: ["Email", "Nama", "Jenis Kelamin", "Handphone", "Alamat", "Tindakan"],
@@ -50,7 +26,7 @@ const useUserController = () => {
       } else {
         Object.assign(tableData, {
           table: data.data.map((item) => {
-            const data = [item.email, item.full_name, item.gender, item.phone, item.address || "-"];
+            const data = [item.email, item.full_name, item.gender, item.phone, item.address];
 
             return {
               id: item.id,
@@ -58,14 +34,14 @@ const useUserController = () => {
               withAction: [
                 {
                   type: "edit",
-                  onClick: (id) => getAdministratorUpdateFormMutation.mutate(id),
+                  onClick: (id) => getEmployeeUpdateFormMutation.mutate(id),
                 },
                 {
                   type: "delete",
                   onClick: (id) => {
                     setRecoil(showConfirmationModalState, true);
                     setRecoil(deleteDataState, {
-                      onApprove: () => deleteAdministratorMutation.mutate(id),
+                      onApprove: () => deleteEmployeeMutation.mutate(id),
                     });
                   },
                 },
@@ -74,10 +50,10 @@ const useUserController = () => {
           }),
         });
 
-        Object.assign(addAdministratorForm, {
+        Object.assign(addEmployeeForm, {
           submitButton: {
-            ...addAdministratorForm.submitButton,
-            onClick: (data) => registerAdministrator(data),
+            ...addEmployeeForm.submitButton,
+            onClick: (data) => addEmployeeMutation.mutate({ ...data, gender: data.gender ? data.gender.value : null }),
           },
         });
       }
@@ -89,17 +65,17 @@ const useUserController = () => {
     };
   };
 
-  // GET - Get Administrator Update Form Data - Access : Admin
-  const getAdministratorUpdateFormMutation = useMutation(getAdministratorDetail, {
+  // GET - Get Employee Update Form Data - Access : Admin
+  const getEmployeeUpdateFormMutation = useMutation(getEmployeeDetail, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
     },
     onSuccess: (response, id) => {
-      const formData = { ...addAdministratorForm };
+      const formData = { ...addEmployeeForm };
 
       Object.assign(formData, {
-        title: "Edit Administrator",
-        inputs: formData.inputs.filter((input) => input.name !== "password" && input.name !== "password_confirmation" && input.name !== "email"),
+        title: "Edit Karyawan",
+        inputs: formData.inputs.filter((input) => input.name !== "email" && input.name !== "password" && input.name !== "password_confirmation"),
         defaultValues: {
           fullName: response.data.full_name,
           gender: response.data.gender,
@@ -109,7 +85,14 @@ const useUserController = () => {
         submitButton: {
           ...formData.submitButton,
           label: "Edit Akun",
-          onClick: (data) => updateAdministratorMutation.mutate({ id, data: { ...data, gender: data.gender ? data.gender.value : null } }),
+          onClick: (data) =>
+            updateEmployeeMutation.mutate({
+              id,
+              data: {
+                ...data,
+                gender: data.gender ? data.gender.value : null,
+              },
+            }),
         },
       });
 
@@ -124,8 +107,8 @@ const useUserController = () => {
     },
   });
 
-  // PUT - Update Administrator Account - Access : Admin
-  const updateAdministratorMutation = useMutation(updateAdministrator, {
+  // POST - Register New Employee Account - Access : Admin
+  const addEmployeeMutation = useMutation(addEmployee, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
       setRecoil(validationErrorState, null);
@@ -134,7 +117,7 @@ const useUserController = () => {
       showToast("success", response.message);
       setRecoil(formModalDataState, null);
       setRecoil(showFormModalState, false);
-      queryClient.invalidateQueries({ queryKey: ["getAdministrators"] });
+      queryClient.invalidateQueries({ queryKey: ["getEmployees"] });
     },
     onError: (error) => {
       if (error.error.status === 422) {
@@ -150,14 +133,40 @@ const useUserController = () => {
     },
   });
 
-  // DELETE - Delete Administrator Account - Access : Admin
-  const deleteAdministratorMutation = useMutation(deleteAdministrator, {
+  // PUT - Update Employee Account Data - Access : Admin
+  const updateEmployeeMutation = useMutation(updateEmployee, {
+    onMutate: () => {
+      setRecoil(isLoadingState, true);
+      setRecoil(validationErrorState, null);
+    },
+    onSuccess: (response) => {
+      showToast("success", response.message);
+      setRecoil(formModalDataState, null);
+      setRecoil(showFormModalState, false);
+      queryClient.invalidateQueries({ queryKey: ["getEmployees"] });
+    },
+    onError: (error) => {
+      if (error.error.status === 422) {
+        setRecoil(validationErrorState, error.error.message);
+      } else {
+        showToast("failed", error.error.message);
+        setRecoil(formModalDataState, null);
+        setRecoil(showFormModalState, false);
+      }
+    },
+    onSettled: () => {
+      setRecoil(isLoadingState, false);
+    },
+  });
+
+  // DELETE - Delete Employee Account - Access : Admin
+  const deleteEmployeeMutation = useMutation(deleteEmployee, {
     onMutate: () => {
       setRecoil(isLoadingState, true);
     },
     onSuccess: (response) => {
       showToast("success", response.message);
-      queryClient.invalidateQueries({ queryKey: ["getAdministrators"] });
+      queryClient.invalidateQueries({ queryKey: ["getEmployees"] });
     },
     onError: (error) => {
       showToast("failed", error.error.message);
@@ -170,9 +179,8 @@ const useUserController = () => {
   });
 
   return {
-    useQueryGetUserProfile,
-    useQueryGetAdministrators,
+    useQueryGetEmployees,
   };
 };
 
-export default useUserController;
+export default useEmployeeController;

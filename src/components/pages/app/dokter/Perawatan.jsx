@@ -1,5 +1,15 @@
+import PageDetailHeader from "components/layouts/PageDetailHeader";
+import Container from "containers/Container";
+import { useParams } from "react-router-dom";
+
 const Perawatan = () => {
-  return <div>Perawatan</div>;
+  const { id } = useParams();
+
+  return (
+    <Container>
+      <PageDetailHeader title="Form Perawatan" />
+    </Container>
+  );
 };
 
 export default Perawatan;

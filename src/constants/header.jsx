@@ -1,6 +1,16 @@
 import { setRecoil } from "recoil-nexus";
 import { formModalDataState, showFormModalState } from "store/atom/formState";
-import { addAdministratorForm, addDoctorAssistantForm, addDoctorForm, addEmployeeForm, addKategoriForm, addObatForm, addPabrikForm, addPatientForm, editKlinikForm } from "./form";
+import {
+  addAdministratorForm,
+  addDoctorAssistantForm,
+  addDoctorForm,
+  addEmployeeForm,
+  addKategoriForm,
+  addObatForm,
+  addPabrikForm,
+  addPatientForm,
+  editKlinikForm,
+} from "./form";
 import { switchIndexState } from "store/atom/pageState";
 
 const pabrikanHeader = {
@@ -231,6 +241,60 @@ const pemeriksaanHeader = {
   functionData: [],
 };
 
+const patientHeader = {
+  first: [
+    {
+      title: "No. Registrasi",
+    },
+    {
+      title: "No. RM",
+    },
+    {
+      title: "Nama",
+    },
+    {
+      title: "TTL",
+    },
+    {
+      title: "Alamat",
+    },
+  ],
+  second: [
+    {
+      title: "Tgl. Periksa",
+    },
+    {
+      title: "Dokter",
+    },
+    {
+      title: "Alergi",
+    },
+  ],
+};
+
+const patientSubHeader = {
+  functionData: [
+    {
+      type: "switch",
+      buttons: [
+        {
+          type: "button",
+          label: "Assessment",
+        },
+        {
+          type: "button",
+          label: "Pengajuan Obat",
+        },
+        {
+          type: "button",
+          label: "Tindakan",
+        },
+      ],
+      onClick: (index) => setRecoil(switchIndexState, index),
+    },
+  ],
+};
+
 export {
   pabrikanHeader,
   kategoriHeader,
@@ -246,4 +310,6 @@ export {
   manajemenKaryawanHeader,
   manajemenAsistenDokterHeader,
   pemeriksaanHeader,
+  patientHeader,
+  patientSubHeader,
 };

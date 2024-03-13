@@ -30,3 +30,20 @@ export const getDoctorConsultingQueue = async () => {
     throw error.response.data;
   }
 };
+
+export const getDoctorConsultingQueueDetail = async (id) => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINT.getDoctorConsultingQueue}/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getRecoil(tokenState)}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};

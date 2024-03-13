@@ -34,3 +34,4 @@ export { default as dokterActive } from "./dokterActive.png";
 export { default as dokterInactive } from "./dokterInactive.png";
 export { default as manajemenActive } from "./manajemenActive.png";
 export { default as manajemenInactive } from "./manajemenInactive.png";
+export { default as assesmentIcon } from "./assessment.png";

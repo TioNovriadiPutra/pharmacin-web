@@ -768,6 +768,75 @@ const addDoctorAssistantForm = {
   },
 };
 
+const perawatanForm = {
+  assessment: {
+    inputs: {
+      first: [
+        {
+          type: "text",
+          name: "icd-10",
+          placeholder: "Kode ICD-10",
+          outside: true,
+        },
+        {
+          type: "text",
+          name: "dokter",
+          placeholder: "DPJP",
+          outside: true,
+          readOnly: true,
+        },
+      ],
+      second: [
+        {
+          type: "unit",
+          name: "weight",
+          placeholder: "BB",
+          outside: true,
+          unit: "Kg",
+        },
+        {
+          type: "unit",
+          name: "height",
+          placeholder: "TB",
+          outside: true,
+          unit: "Cm",
+        },
+        {
+          type: "unit",
+          name: "temperature",
+          placeholder: "Suhu",
+          outside: true,
+          unit: "°C",
+        },
+        {
+          type: "unit",
+          name: "bloodPressure",
+          placeholder: "T. Darah",
+          outside: true,
+          unit: "MmHg",
+        },
+        {
+          type: "unit",
+          name: "pulse",
+          placeholder: "Nadi",
+          outside: true,
+          unit: "/Menit",
+        },
+      ],
+    },
+  },
+  tindakan: {
+    header: ["Nama Obat", "Kadaluarsa", "QTY", "Harga", "Total", "Tindakan"],
+    inputs: [
+      {
+        type: "cart",
+        name: "purchaseItems",
+        readOnly: true,
+      },
+    ],
+  },
+};
+
 export {
   loginForm,
   registerForm,
@@ -782,4 +851,5 @@ export {
   addDoctorForm,
   addEmployeeForm,
   addDoctorAssistantForm,
+  perawatanForm,
 };

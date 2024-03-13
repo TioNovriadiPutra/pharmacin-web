@@ -5,7 +5,8 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 const useCashierForm = () => {
-  const { useQueryGetPurchaseFactories, queryGetPurchaseDrugs, addPurchase } = usePurchaseTransactionController();
+  const { useQueryGetPurchaseFactories, queryGetPurchaseDrugs, addPurchase } =
+    usePurchaseTransactionController();
 
   const { control, getValues, watch, handleSubmit, setValue, reset } = useForm({
     defaultValues: addPembelianForm.defaultValues,

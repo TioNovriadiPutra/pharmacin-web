@@ -295,6 +295,20 @@ const patientSubHeader = {
   ],
 };
 
+const invoiceHeader = {
+  first: [
+    {
+      title: "No. Invoice",
+    },
+    {
+      title: "Nama Pabrik",
+    },
+    {
+      title: "Tanggal",
+    },
+  ],
+};
+
 export {
   pabrikanHeader,
   kategoriHeader,
@@ -312,4 +326,5 @@ export {
   pemeriksaanHeader,
   patientHeader,
   patientSubHeader,
+  invoiceHeader,
 };

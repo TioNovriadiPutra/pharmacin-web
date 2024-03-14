@@ -19,6 +19,7 @@ import Dokter from "components/pages/app/manajemen/Dokter";
 import AsistenDokter from "components/pages/app/manajemen/AsistenDokter";
 import RiwayatKasir from "components/pages/app/manajemen/RiwayatKasir";
 import Administrator from "components/pages/app/manajemen/Administrator";
+import InvoicePembelian from "components/pages/app/pembelian/InvoicePembelian";
 
 const AppRoute = ({ role }) => {
   return (
@@ -41,7 +42,9 @@ const AppRoute = ({ role }) => {
             <Route path="stock/*" element={<StockRoute />} />
             <Route path="pembelian/*" element={<PembelianRoute />} />
             <Route path="pendaftaran" element={<Pendaftaran />} />
-            {role === 1 && <Route path="manajemen/*" element={<ManajemenRoute />} />}
+            {role === 1 && (
+              <Route path="manajemen/*" element={<ManajemenRoute />} />
+            )}
           </>
         )}
 
@@ -73,6 +76,7 @@ const PembelianRoute = () => {
     <Routes>
       <Route path="tambah" element={<TambahPembelian />} />
       <Route path="kelola" element={<KelolaPembelian />} />
+      <Route path="invoice/:id" element={<InvoicePembelian />} />
     </Routes>
   );
 };

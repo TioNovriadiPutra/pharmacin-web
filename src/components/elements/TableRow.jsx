@@ -1,4 +1,4 @@
-import { deleteIcon, editIcon, infoIcon } from "assets/images";
+import { deleteIcon, editIcon, infoIcon, invoiceIcon } from "assets/images";
 import PropTypes from "prop-types";
 import SubmitButton from "./SubmitButton";
 
@@ -65,6 +65,8 @@ const TableRow = ({ rowData }) => {
                       ? editIcon
                       : item.type === "info"
                       ? infoIcon
+                      : item.type === "invoice"
+                      ? invoiceIcon
                       : null
                   }
                 />

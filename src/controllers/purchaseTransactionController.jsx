@@ -1,6 +1,7 @@
 import { addPembelianForm } from "constants/form";
-import { kelolaPembelianHeader } from "constants/header";
+import { invoiceHeader, kelolaPembelianHeader } from "constants/header";
 import { formatCurrency } from "helpers/formatter";
+import { hashIdUrl } from "helpers/hash";
 import { showToast } from "helpers/toast";
 import usePurchaseTransactionModel from "models/purchaseTransactionModel";
 import { useMutation } from "react-query";
@@ -14,24 +15,43 @@ import { isLoadingState } from "store/atom/pageState";
 const usePurchaseTransactionController = () => {
   const nav = useNavigate();
 
-  const { useGetPurchaseTransactions, useGetPurchaseFactories } = usePurchaseTransactionModel();
+  const {
+    useGetPurchaseTransactions,
+    useGetPurchaseFactories,
+    useGetPurchaseTransactionDetail,
+  } = usePurchaseTransactionModel();
 
   const useQueryPurchaseTransactions = () => {
     const { data, isLoading } = useGetPurchaseTransactions();
 
     const tableData = {
-      header: ["No Invoice", "Nama Pabrik", "Tanggal", "Total Pembelian", "Tindakan"],
+      header: [
+        "No Invoice",
+        "Nama Pabrik",
+        "Tanggal",
+        "Total Pembelian",
+        "Tindakan",
+      ],
     };
 
     if (!isLoading) {
       Object.assign(tableData, {
         table: data.data.map((item) => {
-          const data = [item.invoice_number, item.factory_name, item.created_at, formatCurrency(item.total_price)];
+          const data = [
+            item.invoice_number,
+            item.factory_name,
+            item.created_at,
+            formatCurrency(item.total_price),
+          ];
 
           return {
             id: item.id,
             data,
             withAction: [
+              {
+                type: "invoice",
+                onClick: (id) => nav(`/pembelian/invoice/${hashIdUrl(id)}`),
+              },
               {
                 type: "delete",
               },
@@ -66,6 +86,59 @@ const usePurchaseTransactionController = () => {
     }
 
     return {
+      isLoading,
+    };
+  };
+
+  const useQueryGetPurchaseTransactionDetail = (id) => {
+    const { data, isLoading, isError, error } =
+      useGetPurchaseTransactionDetail(id);
+
+    const tableData = {
+      header: ["Nama Obat", "Kadaluarsa", "QTY", "Harga Beli", "Total"],
+      table: [],
+    };
+
+    if (!isLoading) {
+      if (isError) {
+        showToast("failed", error.error.message);
+      } else {
+        const headerData = [
+          data.data.invoice_number,
+          data.data.factory_name,
+          data.data.transaction_date,
+        ];
+
+        Object.assign(invoiceHeader, {
+          first: invoiceHeader.first.map((item, index) => {
+            Object.assign(item, {
+              value: headerData[index],
+            });
+
+            return item;
+          }),
+        });
+
+        Object.assign(tableData, {
+          table: data.data.shopping_carts.map((item) => {
+            const data = [
+              item.drug,
+              item.expired,
+              item.quantity,
+              formatCurrency(item.purchase_price),
+              formatCurrency(item.total_price),
+            ];
+
+            return {
+              data,
+            };
+          }),
+        });
+      }
+    }
+
+    return {
+      tableData,
       isLoading,
     };
   };
@@ -115,6 +188,7 @@ const usePurchaseTransactionController = () => {
   return {
     useQueryPurchaseTransactions,
     useQueryGetPurchaseFactories,
+    useQueryGetPurchaseTransactionDetail,
     queryGetPurchaseDrugs,
     addPurchase: async (data) =>
       await addPurchaseMutation.mutateAsync({

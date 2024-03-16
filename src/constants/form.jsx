@@ -773,17 +773,32 @@ const perawatanForm = {
     inputs: {
       first: [
         {
-          type: "text",
-          name: "icd-10",
-          placeholder: "Kode ICD-10",
-          outside: true,
+          inputs: [
+            {
+              type: "text",
+              name: "icd-10",
+              placeholder: "Kode ICD-10",
+              outside: true,
+            },
+            {
+              type: "text",
+              name: "diagnosa",
+              placeholder: "Diagnosa ICD-10",
+              outside: true,
+              readOnly: true,
+            },
+          ],
         },
         {
-          type: "text",
-          name: "dokter",
-          placeholder: "DPJP",
-          outside: true,
-          readOnly: true,
+          inputs: [
+            {
+              type: "text",
+              name: "dokter",
+              placeholder: "DPJP",
+              outside: true,
+              readOnly: true,
+            },
+          ],
         },
       ],
       second: [
@@ -834,6 +849,10 @@ const perawatanForm = {
         readOnly: true,
       },
     ],
+  },
+  defaultValues: {
+    "icd-10": "",
+    dokter: "",
   },
 };
 

@@ -28,7 +28,11 @@ const Perawatan = () => {
 
         <PageSubHeader subHeaderData={patientSubHeader} />
 
-        {switchIndex === 0 ? <PerawatanAssessment /> : null}
+        {!isLoading ? (
+          switchIndex === 0 ? (
+            <PerawatanAssessment control={control} />
+          ) : null
+        ) : null}
       </ScrollContainer>
     </Container>
   );

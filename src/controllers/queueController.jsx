@@ -1,4 +1,5 @@
 import { queryClient } from "config/query";
+import { perawatanForm } from "constants/form";
 import { patientHeader } from "constants/header";
 import { hashIdUrl } from "helpers/hash";
 import { showToast } from "helpers/toast";
@@ -40,6 +41,7 @@ const useQueueController = () => {
     },
   });
 
+  // GET - Get Doctor Patient Queue List - Access : Doctor,Admin
   const useQueryGetDoctorConsultingQueues = () => {
     const { data, isLoading, isError, error } = useGetDoctorConsultingQueues();
 
@@ -127,6 +129,10 @@ const useQueueController = () => {
 
             return item;
           }),
+        });
+
+        Object.assign(perawatanForm.defaultValues, {
+          dokter: data.data.doctor,
         });
       }
     }

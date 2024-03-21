@@ -1,7 +1,8 @@
 import PerawatanFirstForm from "components/fragments/PerawatanFirstForm";
-import React from "react";
 import PropTypes from "prop-types";
 import Bar from "components/elements/Bar";
+import PerawatanSecondForm from "components/fragments/PerawatanSecondForm";
+import PerawatanThirdForm from "components/fragments/PerawatanThirdForm";
 
 const PerawatanAssessment = ({ control }) => {
   return (
@@ -9,6 +10,12 @@ const PerawatanAssessment = ({ control }) => {
       <PerawatanFirstForm control={control} />
 
       <Bar styles="mx-0 bg-border" />
+
+      <PerawatanSecondForm control={control} />
+
+      <Bar styles="mx-0 bg-border" />
+
+      <PerawatanThirdForm control={control} />
     </div>
   );
 };

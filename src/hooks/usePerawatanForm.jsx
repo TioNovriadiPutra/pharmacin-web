@@ -13,6 +13,7 @@ const usePerawatanForm = () => {
   return {
     switchIndex,
     control,
+    handleSubmit,
   };
 };
 

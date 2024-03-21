@@ -46,6 +46,10 @@ input {
   @apply border border-border outline-none px-3.5 py-2.5 rounded-md w-full font-plus-jakarta text-sm font-medium;
 }
 
+textarea {
+  @apply border border-border outline-none px-3.5 py-2.5 rounded-md w-full font-plus-jakarta text-sm font-medium h-22;
+}
+
 form {
   @apply flex flex-col;
 }
@@ -57,4 +61,13 @@ form {
 .dropdown-menu {
   @apply max-h-84 rounded-sm bg-white left-0 right-0 absolute shadow-dropdown-menu z-50 mx-3.5;
   top: 120%;
+}
+
+.remove-arrow::-webkit-inner-spin-button,
+.remove-arrow::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.remove-arrow {
+  -moz-appearance: textfield;
 }

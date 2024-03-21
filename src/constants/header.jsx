@@ -1,16 +1,6 @@
 import { setRecoil } from "recoil-nexus";
 import { formModalDataState, showFormModalState } from "store/atom/formState";
-import {
-  addAdministratorForm,
-  addDoctorAssistantForm,
-  addDoctorForm,
-  addEmployeeForm,
-  addKategoriForm,
-  addObatForm,
-  addPabrikForm,
-  addPatientForm,
-  editKlinikForm,
-} from "./form";
+import { addAdministratorForm, addDoctorAssistantForm, addDoctorForm, addEmployeeForm, addKategoriForm, addObatForm, addPabrikForm, addPatientForm, editKlinikForm } from "./form";
 import { switchIndexState } from "store/atom/pageState";
 
 const pabrikanHeader = {
@@ -79,7 +69,7 @@ const stockHeader = {
         },
         {
           type: "button",
-          label: "Per Item",
+          label: "Per Batch",
         },
       ],
       onClick: (index) => setRecoil(switchIndexState, index),

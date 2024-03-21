@@ -838,6 +838,40 @@ const perawatanForm = {
           unit: "/Menit",
         },
       ],
+      third: [
+        {
+          inputs: [
+            {
+              type: "textarea",
+              name: "subjective",
+              placeholder: "Subjective",
+              outside: true,
+            },
+            {
+              type: "textarea",
+              name: "objective",
+              placeholder: "Objective",
+              outside: true,
+            },
+          ],
+        },
+        {
+          inputs: [
+            {
+              type: "textarea",
+              name: "assessment",
+              placeholder: "Assessment",
+              outside: true,
+            },
+            {
+              type: "textarea",
+              name: "plan",
+              placeholder: "Plan",
+              outside: true,
+            },
+          ],
+        },
+      ],
     },
   },
   tindakan: {
@@ -852,7 +886,17 @@ const perawatanForm = {
   },
   defaultValues: {
     "icd-10": "",
+    diagnose: "",
     dokter: "",
+    weight: "",
+    height: "",
+    temperature: "",
+    bloodPressure: "",
+    pulse: "",
+    subjective: "",
+    objective: "",
+    assessment: "",
+    plan: "",
   },
 };
 

@@ -17,22 +17,18 @@ const Perawatan = () => {
 
   const { isLoading } = useQueryGetDoctorConsultingQueueDetail(unHashIdUrl(id));
 
-  const { control, switchIndex } = usePerawatanForm();
+  const { control, switchIndex, handleSubmit } = usePerawatanForm();
 
   return (
     <Container>
-      <PageDetailHeader title="Form Perawatan" type="submit" />
+      <PageDetailHeader title="Form Perawatan" type="submit" onDetail={handleSubmit((data) => console.log(data))} />
 
       <ScrollContainer styles="gap-3.5">
         <PatientDetailBox />
 
         <PageSubHeader subHeaderData={patientSubHeader} />
 
-        {!isLoading ? (
-          switchIndex === 0 ? (
-            <PerawatanAssessment control={control} />
-          ) : null
-        ) : null}
+        {!isLoading ? switchIndex === 0 ? <PerawatanAssessment control={control} /> : null : null}
       </ScrollContainer>
     </Container>
   );

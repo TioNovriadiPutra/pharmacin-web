@@ -92,6 +92,7 @@ const useQueueController = () => {
     };
   };
 
+  // GET - Get patient detail in consulting state - Access : Doctor
   const useQueryGetDoctorConsultingQueueDetail = (id) => {
     const { data, isLoading, isError, error } =
       useGetDoctorConsultingQueueDetail(id);
@@ -129,10 +130,6 @@ const useQueueController = () => {
 
             return item;
           }),
-        });
-
-        Object.assign(perawatanForm.defaultValues, {
-          dokter: data.data.doctor,
         });
       }
     }

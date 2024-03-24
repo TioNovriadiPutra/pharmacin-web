@@ -771,36 +771,21 @@ const addDoctorAssistantForm = {
 const perawatanForm = {
   assessment: {
     inputs: {
-      first: [
-        {
-          inputs: [
-            {
-              type: "text",
-              name: "icd-10",
-              placeholder: "Kode ICD-10",
-              outside: true,
-            },
-            {
-              type: "text",
-              name: "diagnosa",
-              placeholder: "Diagnosa ICD-10",
-              outside: true,
-              readOnly: true,
-            },
-          ],
-        },
-        {
-          inputs: [
-            {
-              type: "text",
-              name: "dokter",
-              placeholder: "DPJP",
-              outside: true,
-              readOnly: true,
-            },
-          ],
-        },
-      ],
+      // first: [
+      //   {
+      //     type: "text",
+      //     name: "icd-10",
+      //     placeholder: "Kode ICD-10",
+      //     outside: true,
+      //   },
+      //   {
+      //     type: "text",
+      //     name: "diagnosa",
+      //     placeholder: "Diagnosa ICD-10",
+      //     outside: true,
+      //     readOnly: true,
+      //   },
+      // ],
       second: [
         {
           type: "unit",
@@ -885,9 +870,8 @@ const perawatanForm = {
     ],
   },
   defaultValues: {
-    "icd-10": "",
-    diagnose: "",
-    dokter: "",
+    // "icd-10": "",
+    // diagnose: "",
     weight: "",
     height: "",
     temperature: "",

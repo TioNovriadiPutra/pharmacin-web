@@ -2,6 +2,7 @@ import PageDetailHeader from "components/layouts/PageDetailHeader";
 import { PageSubHeader } from "components/layouts/PageSubHeader";
 import PatientDetailBox from "components/layouts/PatientDetailBox";
 import PerawatanAssessment from "components/layouts/PerawatanAssessment";
+import PerawatanSkeleton from "components/skeleton/PerawatanSkeleton";
 import { patientSubHeader } from "constants/header";
 import Container from "containers/Container";
 import ScrollContainer from "containers/ScrollContainer";
@@ -21,15 +22,23 @@ const Perawatan = () => {
 
   return (
     <Container>
-      <PageDetailHeader title="Form Perawatan" type="submit" onDetail={handleSubmit((data) => console.log(data))} />
+      <PageDetailHeader
+        title="Form Perawatan"
+        type="submit"
+        onDetail={handleSubmit((data) => console.log(data))}
+      />
 
-      <ScrollContainer styles="gap-3.5">
-        <PatientDetailBox />
+      {isLoading ? (
+        <PerawatanSkeleton />
+      ) : (
+        <ScrollContainer styles="gap-3.5">
+          <PatientDetailBox />
 
-        <PageSubHeader subHeaderData={patientSubHeader} />
+          <PageSubHeader subHeaderData={patientSubHeader} />
 
-        {!isLoading ? switchIndex === 0 ? <PerawatanAssessment control={control} /> : null : null}
-      </ScrollContainer>
+          {switchIndex === 0 ? <PerawatanAssessment control={control} /> : null}
+        </ScrollContainer>
+      )}
     </Container>
   );
 };

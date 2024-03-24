@@ -7,9 +7,9 @@ import PerawatanThirdForm from "components/fragments/PerawatanThirdForm";
 const PerawatanAssessment = ({ control }) => {
   return (
     <div className="bg-white px-6 py-4.5 rounded-md ">
-      <PerawatanFirstForm control={control} />
+      {/* <PerawatanFirstForm control={control} /> */}
 
-      <Bar styles="mx-0 bg-border" />
+      {/* <Bar styles="mx-0 bg-border" /> */}
 
       <PerawatanSecondForm control={control} />
 
